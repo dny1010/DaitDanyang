@@ -1,7 +1,8 @@
-from petshop import db
-from datetime import datetime
-from sqlalchemy.types import JSON
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.types import JSON
+from datetime import datetime
+
+db = SQLAlchemy()
 
 
 # ============================================
