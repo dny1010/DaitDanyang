@@ -1,0 +1,11 @@
+{
+    "title": "APST-2041 애견 스탠드 드라이기",
+    "description": "",
+    "price": 420000,
+    "category": "미용 - 펫드라이",
+    "pet_type": "dog",
+    "image_url": "https://shopping-phinf.pstatic.net/main_8216250/82162508713.2.jpg",
+    "local_image_path": "crawled_data\\미용\\펫드라이\\5_APST-2041_애견_스탠드_드라이.jpg",
+    "stock": 87,
+    "views": 34
+}
