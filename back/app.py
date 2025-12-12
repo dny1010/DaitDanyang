@@ -1,30 +1,49 @@
-from flask import Flask, request, jsonify
+# app.py
+
+from flask import Flask
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import *
-migrate = Migrate(app, db)
+from petShop.models import db, User, Product, Order, Review, Address, Pet, Question, Answer
 
-app = Flask(__name__)
-CORS(app)
+migrate = Migrate()  # 선택이지만 이렇게 빼두면 더 정석적이야
 
-# 1) Flask 살아있는지 테스트용 GET
-@app.route("/")
-def index():
-    return "index OK"
 
-@app.route("/ping")
-def ping():
-    return "pong"
+def create_app():
+    app = Flask(__name__)
+    CORS(app)
 
-# 2) 실제 POST 테스트 라우트
-@app.route("/api/chat", methods=["POST"])
-def chat():
-    data = request.get_json() or {}
-    message = data.get("message", "")
-    print("React가 보낸 메시지:", message)
-    return jsonify({"reply": f"너가 보낸: {message}"})
+    # ✅ DB 설정
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///petshop.db"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+    # ✅ db, migrate 초기화
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    # ✅ 헬스 체크용 라우트
+    @app.route("/")
+    def index():
+        return "Petshop API OK"
+
+    # ✅ DB 테스트용 라우트 (원하면 나중에 지우면 됨)
+    @app.route("/test-db")
+    def test_db():
+        test_user = User(
+            user_id="test_user",
+            password="1234",
+            nickname="테스트유저",
+            email="test@example.com"
+        )
+        db.session.add(test_user)
+        db.session.commit()
+        return "DB Insert OK"
+
+    return app
+
+
+app = create_app()
 
 if __name__ == "__main__":
-    print("등록된 라우트들:", app.url_map)   # 서버 실행 시 등록된 URL 출력
+    with app.app_context():
+        print("등록된 라우트들:", app.url_map)
     app.run(port=5000, debug=True)
