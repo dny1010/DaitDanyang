@@ -1,0 +1,11 @@
+{
+    "title": "반려견 간식랜덤박스",
+    "description": "",
+    "price": 10000,
+    "category": "간식 - 쿠키",
+    "pet_type": "dog",
+    "image_url": "https://shopping-phinf.pstatic.net/main_8869481/88694817891.1.jpg",
+    "local_image_path": "crawled_data\\간식\\쿠키\\9_반려견_간식랜덤박스.jpg",
+    "stock": 68,
+    "views": 32
+}

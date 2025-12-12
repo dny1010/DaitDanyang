@@ -1,0 +1,219 @@
+[
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 0,
+    "type": "user",
+    "message": "지금 프로젝트를 시작할건데 코드분석기를 사용해서 폴더를 확인하고 프로젝트를 파악",
+    "timestamp": "2025-12-12T01:43:53.211Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 1,
+    "type": "user",
+    "message": "db를 upgrade해서 적용시키고 테이블들이 정확하게 들어가있는지 확인해줄래 ?",
+    "timestamp": "2025-12-12T01:47:06.894Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 2,
+    "type": "user",
+    "message": "오류메시지를 디버깅하게 너가 코드를 짜줄래",
+    "timestamp": "2025-12-12T01:50:12.888Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 3,
+    "type": "user",
+    "message": "내가 실행해서 확인해줄게 실행코드만 알려줘",
+    "timestamp": "2025-12-12T01:51:18.677Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 4,
+    "type": "user",
+    "message": "FAILED: No 'script_location' key found in configuration.",
+    "timestamp": "2025-12-12T01:52:24.940Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 5,
+    "type": "user",
+    "message": "(.venv) C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Scripts>flask db upgrade\nError: Could not locate a Flask application. Use the 'flask --app' option, 'FLASK_APP' environment variable, or a 'wsgi.py' or 'app.py' file in the current directory.\n\nUsage: flask [OPTIONS] COMMAND [ARGS]...\nTry 'flask --help' for help.\n\nError: No such command 'db'.",
+    "timestamp": "2025-12-12T01:53:15.598Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 6,
+    "type": "user",
+    "message": "ㅊㅇ ..",
+    "timestamp": "2025-12-12T01:53:56.277Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 7,
+    "type": "user",
+    "message": "(.venv) C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back>flask --app app db upgrade\nINFO  [alembic.runtime.migration] Context impl SQLiteImpl.\nINFO  [alembic.runtime.migration] Will assume non-transactional DDL.\nINFO  [alembic.runtime.migration] Running upgrade  -> ad6ae46ae7f9, empty message",
+    "timestamp": "2025-12-12T01:54:21.864Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 8,
+    "type": "user",
+    "message": "명령어를 실행했는데 아무것도안ㄴ뜨는데 ?",
+    "timestamp": "2025-12-12T01:54:52.672Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 9,
+    "type": "user",
+    "message": "No tables found in the database.",
+    "timestamp": "2025-12-12T01:55:18.878Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 10,
+    "type": "user",
+    "message": "(.venv) C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back>python check_db_path.py\n--- Database Configuration ---\nURI: sqlite:///petshop.db\nFlask Instance Path: C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\instance\nChecking path 1 (Root relative): C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\petshop.db -> Exists? True\nChecking path 2 (Instance relative): C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\instance\\petshop.db -> Exists? True\n------------------------------",
+    "timestamp": "2025-12-12T01:56:21.043Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 11,
+    "type": "user",
+    "message": "(.venv) C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back>python check_tables_v2.py\n\nChecking database file: petshop.db\n  -> No tables found (File is empty or not initialized).\n\nChecking database file: instance\\petshop.db\n  -> Found tables:\n    - alembic_version\n    - product\n    - user\n    - address\n    - cart\n    - order\n    - pet\n    - question\n    - review\n    - answer",
+    "timestamp": "2025-12-12T01:57:39.722Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 12,
+    "type": "user",
+    "message": "삭제해",
+    "timestamp": "2025-12-12T01:57:53.388Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 13,
+    "type": "user",
+    "message": "그러면 다시 재생성되게끔 알려줘야지",
+    "timestamp": "2025-12-12T01:58:18.559Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 14,
+    "type": "user",
+    "message": "그래 그다음은 ?",
+    "timestamp": "2025-12-12T01:59:18.399Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 15,
+    "type": "user",
+    "message": "다 잘된다",
+    "timestamp": "2025-12-12T02:00:07.616Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 16,
+    "type": "user",
+    "message": "instance에있는 db를 upgrade해야된다고",
+    "timestamp": "2025-12-12T02:01:27.933Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 17,
+    "type": "user",
+    "message": "INFO  [alembic.runtime.migration] Context impl SQLiteImpl.\nINFO  [alembic.runtime.migration] Will assume non-transactional DDL.",
+    "timestamp": "2025-12-12T02:02:23.457Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 18,
+    "type": "user",
+    "message": "아니고 너가 back/petshop.db를 새로만들어서 빈테이블로 작성했다고",
+    "timestamp": "2025-12-12T02:02:58.777Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 19,
+    "type": "user",
+    "message": "flask migrate된 파일 연결 확인어떻게해 ?",
+    "timestamp": "2025-12-12T02:03:52.951Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 20,
+    "type": "user",
+    "message": "그러면 테이블목록 조회 코드를 알려줘",
+    "timestamp": "2025-12-12T02:05:19.891Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 21,
+    "type": "user",
+    "message": "그러면 내가지금 사진을 크롤링하려고 하거든 세부목록은 다음과같아 이름 / 내용 / 가격 / 브랜드 / 상품정보(향, 중량, 원산지같은 것들) → 종류별로 최소 20개씩\n\n강아지\n사료 (육류, 어류, 갑각류 / 단 1-3kg, 3-5kg, 5-10kg 용량별로 최소 3-4개씩은 존재해야함)\n         (과일, 야채는 종류가 적어서 최소 5개 이상만 / 섞여있는 것도 OK)\n간식\n(껌, 육포, 캔, 쿠키, 소시지, 동결건조,영양공급)\n위생 (배변패드, 배변판, 기저귀, 탈취/소독, 배변봉투/집게, 물티슈/클리너, 배변유도제 / 배변유도제는 최소 10개)\n미용\n(샴푸/린스, 에센스/향수, 브러쉬, 미용가위, 발톱, 눈/귀관리, 구강관리, 타올/티슈, 펫드라이 / 펫드라이는 최소 10개)\n식기\n(식기, 정수기/물병, 자동식기/급수기)\n하우스\n(하우스, 방석/매트, 계단, 철장/안전문)\n이동장(이동가방/이동장, 유모차, 차량용)\n건강관리 (종합비타민, 피부/모발, 뼈/칼슘, 눈/귀/구강, 장/소화/유산균, 해충방지)\n의류\n(원피스, 티셔츠/후드, 신발/양말, 모자/머리핀)\n산책용품\n(목줄, 하네스, 리드줄/자동줄, 이름표)\n장난감 (봉제, 치실, 공/원반, 노즈워크)",
+    "timestamp": "2025-12-12T02:07:48.769Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 22,
+    "type": "user",
+    "message": "/stats",
+    "timestamp": "2025-12-12T02:10:20.334Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 23,
+    "type": "user",
+    "message": "/compress",
+    "timestamp": "2025-12-12T02:10:54.038Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 24,
+    "type": "user",
+    "message": "(.venv) C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back>python crawler.py\n--- Crawling Start ---\nCrawling: [사료 - 육류_1-3kg] Keyword: 강아지 사료 육류 1kg (Target: 4)\n   -> Found 0 items for '강아지 사료 육류 1kg'\nCrawling: [사료 - 육류_3-5kg] Keyword: 강아지 사료 육류 3kg (Target: 4)\n   -> Found 0 items for '강아지 사료 육류 3kg'\nCrawling: [사료 - 육류_5-10kg] Keyword: 강아지 사료 육류 5kg (Target: 4)\nTraceback (most recent call last):\n  File \"C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\crawler.py\", line 188, in main\n    items = crawl_naver_shopping(driver, keyword, count)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\crawler.py\", line 120, in crawl_naver_shopping\n    scroll_down(driver)\n  File \"C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\crawler.py\", line 113, in scroll_down\n    time.sleep(1)\nKeyboardInterrupt\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\util\\connection.py\", line 73, in create_connection\n    sock.connect(sa)\nConnectionRefusedError: [WinError 10061] 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\crawler.py\", line 221, in <module>\n    main()\n  File \"C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\crawler.py\", line 212, in main\n    driver.quit()\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\selenium\\webdriver\\chromium\\webdriver.py\", line 213, in quit\n    super().quit()\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py\", line 556, in quit\n    self.execute(Command.QUIT)\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\webdriver.py\", line 429, in execute\n    response = cast(RemoteConnection, self.command_executor).execute(driver_command, params)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\remote_connection.py\", line 405, in execute\n    return self._request(command_info[0], url, body=data)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\selenium\\webdriver\\remote\\remote_connection.py\", line 429, in _request\n    response = self._conn.request(method, url, body=body, headers=headers, timeout=self._client_config.timeout)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\_request_methods.py\", line 135, in request   \n    return self.request_encode_url(\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\_request_methods.py\", line 182, in request_encode_url\n    return self.urlopen(method, url, **extra_kw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\poolmanager.py\", line 457, in urlopen        \n    response = conn.urlopen(method, u.request_uri, **kw)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\connectionpool.py\", line 871, in urlopen     \n    return self.urlopen(\n           ^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\connectionpool.py\", line 787, in urlopen     \n    response = self._make_request(\n               ^^^^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\connectionpool.py\", line 493, in _make_request\n    conn.request(\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\connection.py\", line 500, in request\n    self.endheaders()\n  File \"C:\\Users\\WD\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\http\\client.py\", line 1333, in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n  File \"C:\\Users\\WD\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\http\\client.py\", line 1093, in _send_output\n    self.send(msg)\n  File \"C:\\Users\\WD\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\http\\client.py\", line 1037, in send\n    self.connect()\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\connection.py\", line 331, in connect\n    self.sock = self._new_conn()\n                ^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\connection.py\", line 204, in _new_conn       \n    sock = connection.create_connection(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"c:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\.venv\\Lib\\site-packages\\urllib3\\util\\connection.py\", line 81, in create_connection\n    sock.close()\n  File \"C:\\Users\\WD\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\socket.py\", line 501, in close\n    def close(self):\n\nKeyboardInterrupt\n^C  지금 네이버에서 크롤링 방지되어있거든?",
+    "timestamp": "2025-12-12T02:12:46.547Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 25,
+    "type": "user",
+    "message": "1번으로 해줄래 ?",
+    "timestamp": "2025-12-12T02:13:13.142Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 26,
+    "type": "user",
+    "message": "pc_zww65jRtKpd0W3PWx, 1XIUlQYx6W",
+    "timestamp": "2025-12-12T02:15:22.172Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 27,
+    "type": "user",
+    "message": "(.venv) C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back>python crawler_api.py\n--- Naver Shopping API Crawling Start ---\nCrawling: [사료 - 육류_1-3kg] Keyword: 강아지 사료 육류 1kg (Target: 4)\nTraceback (most recent call last):\n  File \"C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\crawler_api.py\", line 189, in <module>\n    main()\n  File \"C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back\\crawler_api.py\", line 151, in main\n    clean_description = item['description'].replace('<b>', '').replace('</b>', '')\n                        ~~~~^^^^^^^^^^^^^^^\nKeyError: 'description'",
+    "timestamp": "2025-12-12T02:16:17.387Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 28,
+    "type": "user",
+    "message": "(.venv) C:\\SynologyDrive\\Nyang\\NyangNyang\\NyangNyang\\back>python crawler_api.py\n--- Naver Shopping API Crawling Start ---\nCrawling: [사료 - 육류_1-3kg] Keyword: 강아지 사료 육류 1kg (Target: 4)\nCrawling: [사료 - 육류_3-5kg] Keyword: 강아지 사료 육류 3kg (Target: 4)\nCrawling: [사료 - 육류_5-10kg] Keyword: 강아지 사료 육류 5kg (Target: 4)\nCrawling: [사료 - 어류_1-3kg] Keyword: 강아지 사료 연어 1kg (Target: 4)\nCrawling: [사료 - 어류_3-5kg] Keyword: 강아지 사료 연어 3kg (Target: 4)\nCrawling: [사료 - 어류_5-10kg] Keyword: 강아지 사료 연어 5kg (Target: 4)\nCrawling: [사료 - 갑각류_모음] Keyword: 강아지 사료 새우 관절 (Target: 5)\nCrawling: [사료 - 과일야채] Keyword: 강아지 채식 사료 (Target: 5)\nCrawling: [간식 - 껌] Keyword: 강아지 껌 (Target: 20)\nCrawling: [간식 - 육포] Keyword: 강아지 육포 (Target: 20)\nCrawling: [간식 - 캔] Keyword: 강아지 캔 간식 (Target: 20)\nCrawling: [간식 - 쿠키] Keyword: 강아지 쿠키 (Target: 20)\nCrawling: [간식 - 소시지] Keyword: 강아지 소시지 (Target: 20)\nCrawling: [간식 - 동결건조] Keyword: 강아지 동결건조 간식 (Target: 20)\nCrawling: [간식 - 영양공급] Keyword: 강아지 영양제 간식 (Target: 20)\nCrawling: [위생 - 배변패드] Keyword: 강아지 배변패드 (Target: 20)\nCrawling: [위생 - 배변판] Keyword: 강아지 배변판 (Target: 20)\nCrawling: [위생 - 기저귀] Keyword: 강아지 기저귀 (Target: 20)\nCrawling: [위생 - 탈취소독] Keyword: 강아지 탈취제 (Target: 20)\nCrawling: [위생 - 배변봉투] Keyword: 강아지 배변봉투 (Target: 20)\nCrawling: [위생 - 물티슈] Keyword: 강아지 물티슈 (Target: 20)\nCrawling: [위생 - 배변유도제] Keyword: 강아지 배변유도제 (Target: 10)\nCrawling: [미용 - 샴푸린스] Keyword: 강아지 샴푸 (Target: 20)\nCrawling: [미용 - 에센스] Keyword: 강아지 에센스 (Target: 20)\nCrawling: [미용 - 브러쉬] Keyword: 강아지 브러쉬 (Target: 20)\nCrawling: [미용 - 미용가위] Keyword: 강아지 미용가위 (Target: 20)\nCrawling: [미용 - 발톱] Keyword: 강아지 발톱깎이 (Target: 20)\nCrawling: [미용 - 눈귀관리] Keyword: 강아지 귀세정제 (Target: 20)\nCrawling: [미용 - 구강관리] Keyword: 강아지 치약 칫솔 (Target: 20)\nCrawling: [미용 - 타올] Keyword: 강아지 목욕 타올 (Target: 20)\nCrawling: [미용 - 펫드라이] Keyword: 강아지 드라이룸 (Target: 10)\nCrawling: [식기 - 식기] Keyword: 강아지 밥그릇 (Target: 20)\nCrawling: [식기 - 정수기] Keyword: 강아지 정수기 (Target: 20)\nCrawling: [식기 - 자동급식기] Keyword: 강아지 자동급식기 (Target: 20)\nCrawling: [하우스 - 하우스] Keyword: 강아지 집 (Target: 20)\nCrawling: [하우스 - 방석] Keyword: 강아지 방석 (Target: 20)\nCrawling: [하우스 - 계단] Keyword: 강아지 계단 (Target: 20)\nCrawling: [하우스 - 안전문] Keyword: 강아지 안전문 (Target: 20)\nCrawling: [이동장 - 이동가방] Keyword: 강아지 이동가방 (Target: 20)\nCrawling: [이동장 - 유모차] Keyword: 강아지 유모차 (Target: 20)\nCrawling: [이동장 - 차량용] Keyword: 강아지 카시트 (Target: 20)\nCrawling: [건강관리 - 종합비타민] Keyword: 강아지 종합비타민 (Target: 20)\nCrawling: [건강관리 - 피부모발] Keyword: 강아지 피부 영양제 (Target: 20)\nCrawling: [건강관리 - 뼈칼슘] Keyword: 강아지 관절 영양제 (Target: 20)\nCrawling: [건강관리 - 눈귀구강] Keyword: 강아지 눈 영양제 (Target: 20)\nCrawling: [건강관리 - 장유산균] Keyword: 강아지 유산균 (Target: 20)\nCrawling: [건강관리 - 해충방지] Keyword: 강아지 해충방지 목걸이 (Target: 20)\nCrawling: [의류 - 원피스] Keyword: 강아지 원피스 (Target: 20)\nCrawling: [의류 - 티셔츠] Keyword: 강아지 티셔츠 (Target: 20)\nCrawling: [의류 - 신발] Keyword: 강아지 신발 (Target: 20)\nCrawling: [의류 - 모자] Keyword: 강아지 모자 (Target: 20)\nCrawling: [산책용품 - 목줄] Keyword: 강아지 목줄 (Target: 20)\nCrawling: [산책용품 - 하네스] Keyword: 강아지 하네스 (Target: 20)\nCrawling: [산책용품 - 리드줄] Keyword: 강아지 리드줄 (Target: 20)\nCrawling: [산책용품 - 이름표] Keyword: 강아지 인식표 (Target: 20)\nCrawling: [장난감 - 봉제] Keyword: 강아지 삑삑이 인형 (Target: 20)\nCrawling: [장난감 - 치실] Keyword: 강아지 터그놀이 (Target: 20)\nCrawling: [장난감 - 공원반] Keyword: 강아지 공 장난감 (Target: 20)\nCrawling: [장난감 - 노즈워크] Keyword: 강아지 노즈워크 (Target: 20)\n--- Finished. Saved 1034 items to 'crawled_data_api.json' ---",
+    "timestamp": "2025-12-12T02:17:15.024Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 29,
+    "type": "user",
+    "message": "지금 db에 들어간것들을 폴더별 그리고 항목별로 나눠주고 그림파일들과 그에대한 메타데이터 파일로 작성해서 분류해줘",
+    "timestamp": "2025-12-12T02:19:32.697Z"
+  },
+  {
+    "sessionId": "e29f9c1b-8766-4605-8dd5-06436b56fb0e",
+    "messageId": 30,
+    "type": "user",
+    "message": "응 다됐다",
+    "timestamp": "2025-12-12T03:08:58.758Z"
+  }
+]
