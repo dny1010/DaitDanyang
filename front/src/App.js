@@ -1,8 +1,10 @@
 // front/src/App.js
 import React, { useState } from "react";
 import { sendMessage } from "./api/axios";
+import Login from "./pages/Login";
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
   const [input, setInput] = useState("");
   const [reply, setReply] = useState("");
 
@@ -17,6 +19,8 @@ function App() {
       setReply("서버 요청 중 오류가 발생했습니다.");
     }
   };
+
+  if (!isLogin) return <Login onLogin={() => setIsLogin(true)} />;
 
   return (
     <div style={{ padding: "40px" }}>
