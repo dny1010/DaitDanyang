@@ -1,0 +1,25 @@
+# IDE
+.idea/
+.vscode/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# SQLite DB
+*.db
+
+# Environment variables
+.env
+
+# Flask instance folder (세션/업로드 파일 등)
+instance/
+
+# Alembic migration cache files
+migrations/__pycache__/
+
+# (참고) 실제 migration 스크립트는 포함해야 함
+# migrations/versions/  <-- 절대 ignore 하지 않음!

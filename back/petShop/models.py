@@ -80,6 +80,9 @@ class Product(db.Model):
     # 상품 카테고리 (사료, 간식, 장난감, 용품 등)
     category = db.Column(db.String(50), nullable=True)
 
+    # 상품 서브 카테고리 (육류 어류 같은것)
+    sub_category = db.Column(db.String(50), nullable=True)
+
     # 대상 동물 (cat, dog, etc)
     pet_type = db.Column(db.String(10), nullable=True)
 
