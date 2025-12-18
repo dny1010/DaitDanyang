@@ -1,0 +1,110 @@
+.signupWrap{
+  min-height: 100vh;
+  background:#e9e9e9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px;
+}
+
+.signupCard{
+  width: 100%;
+  max-width: 720px;
+  background:#fff;
+  border: 1px solid #bfbfbf;
+  padding: 22px;
+  border-radius: 14px;
+}
+
+
+.section{
+  margin-top: 10px;
+}
+
+.signup-sectionLabel{
+  display:inline-block;
+  border: 2px solid #999;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.fieldRow{
+  display:grid;
+  grid-template-columns: 160px 1fr;
+  gap: 14px;
+  align-items:center;
+  padding: 10px 0;
+}
+
+.fieldRow label{
+  font-size: 14px;
+  color:#333;
+}
+
+.fieldRow input,
+.fieldRow select{
+  width: 100%;
+  height: 40px;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  padding: 0 12px;
+}
+
+.divider{
+  margin: 18px 0;
+  border: none;
+  border-top: 2px solid #333;
+}
+
+.submitRow{
+  display:flex;
+  justify-content:center;
+  margin-top: 24px;
+}
+
+.btnSignup{
+  min-width: 160px;
+  height: 44px;
+  border: 1px solid #9bbad1;
+  background:#cfe3f2;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+/* input + 버튼 한 줄 */
+.inlineRow{
+  display: grid;
+  grid-template-columns: 1fr 110px;
+  gap: 10px;
+  align-items: center;
+}
+
+/* 주소는 2줄(주소+버튼 / 상세주소) */
+.addressBlock{
+  display: flex;
+  flex-direction: column;
+}
+
+/* inline 버튼 */
+.btnInline{
+  height: 40px;
+  border: 1px solid #9bbad1;
+  background: #cfe3f2;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mt8{ margin-top: 8px; }
+
+/* 중복확인 메시지 */
+.helpText{
+  grid-column: 2 / 3; /* label(1칸) 다음 영역에 표시 */
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.helpText.ok{ color: #1a7f37; }
+.helpText.bad{ color: #b42318; }

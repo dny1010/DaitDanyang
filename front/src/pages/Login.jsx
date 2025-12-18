@@ -53,7 +53,7 @@ export default function Login() {
         </div>
 
 
-        <h4 className="sectionLabel">로그인</h4>
+        <h4 className="login-sectionLabel">로그인</h4>
 
 
         <form onSubmit={handleLogin}>
@@ -116,7 +116,7 @@ export default function Login() {
         {/* ✅ 구분선: 부트스트랩 hr */}
         <hr className="my-4" />
 
-        <h4 className="sectionLabel">회원가입</h4>
+        <h4 className="login-sectionLabel">회원가입</h4>
 
         {/* ✅ 빨간 동그라미: 소셜/회원가입 버튼 블록 */}
         <div className="d-grid gap-3 mt-3">

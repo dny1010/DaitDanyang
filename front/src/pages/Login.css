@@ -21,7 +21,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: auto;        /* 기존 86px 쓰기 싫으면 */
+  height: auto;        
   margin-bottom: 14px;
 }
 
@@ -38,7 +38,7 @@
   color:#000;
 }
 
-.sectionLabel{
+.login-sectionLabel{
   font-size: medium;
 }
 
