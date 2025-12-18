@@ -2,22 +2,37 @@
 import { useState } from "react";
 import "./Login.css";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 
-
-
-export default function Login({ onLogin }) {
+export default function Login() {
   const [userId, setUserId] = useState("");
   const [pw, setPw] = useState("");
   const [auto, setAuto] = useState(false);
   const navigate = useNavigate();
 
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
   e.preventDefault();
-  // TODO: 실제 로그인 API 붙이기
-  navigate("/home");
-  };
+//e.preventDefault() ← 이거 왜 필요? “폼 제출하고 아이디/비번 틀려도 그대로 입력창에 남아있음 / 이거 쓰는 이유는 새로고침 하지말라는 말” 
+
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/login",
+      {
+        userId,
+        password: pw,
+      }
+    );
+
+    console.log(res.data);
+
+    // 성공 시만 이동
+    navigate("/");
+  } catch (err) {
+    alert("로그인 실패");
+  }
+};
 
 
   return (
@@ -25,13 +40,18 @@ export default function Login({ onLogin }) {
       {/* card + shadow + rounded는 부트스트랩, 크기/배경/보더는 Login.css에서 */}
       <div className="loginCard card shadow rounded-4 p-4">
         {/* 상단 브랜드 박스(기존 디자인 유지) */}
-        <div className="brandBox">
-          <div className="brandLogo">
-            {/* public 폴더에 logo.png 넣으면 됨: front/public/logo.png */}
-            <img src="/logo.png" alt="logo" />
-          </div>
-          <div className="brandTitle">DaitDanyang</div>
+        <div
+          className="brandBox"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        >
+          <img
+            src={`${process.env.PUBLIC_URL}/images/daitdanyang-logo.png` }
+            alt="DaitDanyang"
+            className="brandImage"
+          />
         </div>
+
 
         <h4 className="sectionLabel">로그인</h4>
 
@@ -119,7 +139,7 @@ export default function Login({ onLogin }) {
           <button
             className="btn btn-lg btn-signup"
             type="button"
-            onClick={() => alert("회원가입")}
+            onClick={() => navigate("/signup")}
           >
             회원가입
           </button>

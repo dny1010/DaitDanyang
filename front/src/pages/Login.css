@@ -17,38 +17,18 @@
 }
 
 
-.brandBox{
-  position: relative;
-  display:flex;
-  align-items:center;
-  border: 1px solid #bfbfbf;
-  background:#fff;
-  height: 86px;
+.brandBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;        /* 기존 86px 쓰기 싫으면 */
   margin-bottom: 14px;
 }
 
-.brandLogo{
-  width: 86px;
-  height: 86px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-right: 1px solid #bfbfbf;
-}
-.brandLogo img{
-  width: 78px;
-  height: 78px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.brandTitle{
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 42px;
-  font-weight: 700;
-  color: #333;
+.brandImage {
+  max-width: 260px;    /* 크기는 여기서 조절 */
+  width: 100%;
+  height: auto;
 }
 
 .btn-login{
