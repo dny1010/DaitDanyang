@@ -16,12 +16,26 @@
   border-radius: 14px;
 }
 
+.signupHeader{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.brandImage{
+  width: 260px;        /* 원하는 크기 */
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 
 .section{
   margin-top: 10px;
 }
 
-.signup-sectionLabel{
+.signup_sectionLabel{
   display:inline-block;
   border: 2px solid #999;
   padding: 6px 16px;
@@ -100,11 +114,16 @@
 .mt8{ margin-top: 8px; }
 
 /* 중복확인 메시지 */
-.helpText{
-  grid-column: 2 / 3; /* label(1칸) 다음 영역에 표시 */
-  margin-top: 6px;
+.helpText {
   font-size: 13px;
+  margin-top: 6px;
 }
 
-.helpText.ok{ color: #1a7f37; }
-.helpText.bad{ color: #b42318; }
+.ok {
+  color: green;
+}
+
+.bad {
+  color: red;
+}
+

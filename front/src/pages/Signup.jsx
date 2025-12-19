@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Signup.css";
+import styles from "./Signup.module.css";
 
 function Signup() {
   const navigate = useNavigate();
@@ -75,30 +75,30 @@ function Signup() {
   };
 
   return (
-    <div className="signupWrap">
-      <div className="signupCard">
+    <div className={styles.signupWrap}>
+      <div className={styles.signupCard}>
         
         <div
-          className="signupHeader"
+          className={styles.signupHeader}
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }}
         >
           <img
             src={`${process.env.PUBLIC_URL}/images/daitdanyang-logo.png` }
             alt="DaitDanyang"
-            className="brandImage"
+            className={styles.brandImage}
           />
         </div>
 
         <form onSubmit={onSubmit}>
           {/* 기본정보 */}
-          <div className="section">
-            <div className="signup-sectionLabel">기본정보</div>
+          <div className={styles.section}>
+            <div className={styles.signup_sectionLabel}>기본정보</div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>아이디 :</label>
 
-              <div className="inlineRow">
+              <div className={styles.inlineRow}>
                 <input
                   name="userId"
                   value={form.userId}
@@ -111,7 +111,7 @@ function Signup() {
 
                 <button
                   type="button"
-                  className="btnInline"
+                  className={styles.btnInline}
                   onClick={handleCheckId}
                 >
                   중복확인
@@ -119,14 +119,18 @@ function Signup() {
               </div>
 
               {idCheck.done && (
-                <div className={`helpText ${idCheck.ok ? "ok" : "bad"}`}>
+                <div
+                  className={`${styles.helpText} ${idCheck.ok ? styles.ok : styles.bad
+                    }`}
+                >
                   {idCheck.msg}
                 </div>
               )}
+
             </div>
 
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>비밀번호 :</label>
               <input
                 type="password"
@@ -137,7 +141,7 @@ function Signup() {
               />
             </div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>비밀번호 확인 :</label>
               <input
                 type="password"
@@ -148,7 +152,7 @@ function Signup() {
               />
             </div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>이름 :</label>
               <input
                 name="name"
@@ -158,11 +162,11 @@ function Signup() {
               />
             </div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>주소 :</label>
 
-              <div className="addressBlock">
-                <div className="inlineRow">
+              <div className={styles.addressBlock}>
+                <div className={styles.inlineRow}>
                   <input
                     name="address"
                     value={form.address}
@@ -172,7 +176,7 @@ function Signup() {
                   />
                   <button
                     type="button"
-                    className="btnInline"
+                    className={styles.btnInline}
                     onClick={handleAddressSearch}
                   >
                     주소검색
@@ -184,13 +188,13 @@ function Signup() {
                   value={form.addressDetail}
                   onChange={onChange}
                   placeholder="상세주소"
-                  className="mt8"
+                  className={styles.mt8}
                 />
               </div>
             </div>
 
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>전화번호 :</label>
               <input
                 name="phone"
@@ -200,7 +204,7 @@ function Signup() {
               />
             </div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>이메일 :</label>
               <input
                 name="email"
@@ -210,7 +214,7 @@ function Signup() {
               />
             </div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>소셜연결 :</label>
               <input
                 name="social"
@@ -221,13 +225,13 @@ function Signup() {
             </div>
           </div>
 
-          <hr className="divider" />
+          <hr className={styles.divider} />
 
           {/* 선택사항 */}
-          <div className="section">
-            <div className="sectionLabel">선택사항</div>
+          <div className={styles.section}>
+            <div className={styles.signup_sectionLabel}>선택사항</div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>종류 :</label>
               <select name="petType" value={form.petType} onChange={onChange}>
                 <option value="">선택</option>
@@ -237,7 +241,7 @@ function Signup() {
               </select>
             </div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>성별 :</label>
               <select name="gender" value={form.gender} onChange={onChange}>
                 <option value="">선택</option>
@@ -247,7 +251,7 @@ function Signup() {
               </select>
             </div>
 
-            <div className="fieldRow">
+            <div className={styles.fieldRow}>
               <label>생일 :</label>
               <input
                 type="date"
@@ -258,8 +262,8 @@ function Signup() {
             </div>
           </div>
 
-          <div className="submitRow">
-            <button className="btnSignup" type="submit">
+          <div className={styles.submitRow}>
+            <button className={styles.btnSignup} type="submit">
               회원가입
             </button>
           </div>
