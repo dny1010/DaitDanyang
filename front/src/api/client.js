@@ -14,6 +14,12 @@ const client = axios.create({
 
   // 요청이 10초 넘으면 끊어버림 (무한 대기 방지)
   timeout: 10000,
+  // ✅ 배열 파라미터를 Flask가 받기 좋은 형태로 직렬화
+  // category: ["의류","산책용품"]
+  // → ?category=의류&category=산책용품
+  paramsSerializer: {
+    indexes: null,
+  },
 });
 
 /**

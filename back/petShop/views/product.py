@@ -7,11 +7,17 @@ product_bp = Blueprint('product', __name__, url_prefix='/api/product')
 @product_bp.get("")
 def list_products():
     pet_type = request.args.get('pet_type')
-    category = request.args.get('category')
+    categories = request.args.getlist('category')
     page = request.args.get('page',default=1, type=int)
-    limit = request.args.get('limit',default=20, type=int)
+    limit = request.args.get('limit',default=12, type=int)
     sort = request.args.get('sort',default='id_desc',type=str)
-
+    # 추가한이유 프론트에서 필터링한 네임들이 매칭이 되질않아 db의 네임과 맞게 매칭 하던중
+    # 같은 카테고리에 들어가야하는 물건들을 발견 그 물건들은 한곳에 넣기위해 리스트화 하였고 그 것 을 받기위해
+    # category[]로 보내라고 하였더니 category와 category[]가 공존 category[]를 읽지못하는 상황이 발생하여
+    # category[]를 읽는 코드를 작성
+    # 내가 받아오는 값이 category[]이면 category[]를 키값으로 다시 집어넣고 값을 받아라
+    if not categories:
+        categories = request.args.getlist('category[]')
     # 페이지 최소값 1로 지정
     page = max(page, 1)
     # limit max제한
@@ -23,8 +29,8 @@ def list_products():
 
     if pet_type:
         q = q.filter(Product.pet_type == pet_type)
-    if category:
-        q = q.filter(Product.category == category)
+    if categories:
+        q = q.filter(Product.category.in_(categories))
 
 
     # desc : 큰 값 → 작은 값 (내림차순), asc : 작은 값 → 큰 값 (오름차순)
@@ -35,6 +41,8 @@ def list_products():
         q = q.order_by(Product.price.desc())
     elif sort == "views_desc":
         q = q.order_by(Product.views.desc())
+    elif sort == "review_count_desc":
+        q = q.order_by(Product.review_count.desc())
     # 기본 정렬
     else:
         q = q.order_by(Product.id.desc())
