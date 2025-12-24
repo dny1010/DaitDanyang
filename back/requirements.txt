@@ -1,0 +1,12 @@
+flask
+flask-cors
+flask-sqlalchemy
+flask-migrate
+sqlalchemy
+sqlalchemy-utils
+pymysql 
+openai
+chromadb
+python-dotenv
+requests
+email-validator
