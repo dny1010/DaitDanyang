@@ -8,6 +8,10 @@ import './App.css'; // 기존 App.css를 유지하여 전체적인 스타일링 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import FindAccount from "./pages/FindAccount";
+import CartPage from "./pages/Cart";
+import OrderComplete from "./pages/OrderComplete/OrderComplete";
+import Order from "./components/Order";
+import Event from "./components/Event";
 import { Route, Routes } from "react-router-dom";
 
 
@@ -19,9 +23,12 @@ function MainLayout() {
     <div className="MainLayout">
       <Navbar />
       <Routes>
-        <Route path="/category/:pet/:sub?" element={<PostForm />} />
+        <Route path="/category/:pet/:sub?" element={<Category />} />
         <Route path="/form" element={<PostForm />} />
         <Route path="/find-account" element={<FindAccount />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/order/complete" element={<OrderComplete />} />
+        <Route path="/Event" element={<Event />} />
       </Routes>
     </div>
   );
@@ -36,6 +43,7 @@ function App() {
       {/* 로그인 / 회원가입 (네비바, 푸터 없음) */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/Order" element={<Order />} />
 
       {/* 로그인 이후 메인 페이지 */}
       <Route path="/*" element={<MainLayout />} />
