@@ -4,7 +4,7 @@ import styles from "./Signup.module.css";
 
 function Signup() {
   const navigate = useNavigate();
-
+  
   const [form, setForm] = useState({
     userId: "",
     pw: "",
@@ -20,6 +20,9 @@ function Signup() {
     gender: "",    // 선택사항
     birth: "",     // 선택사항
   });
+
+  const [errors, setErrors] = useState({});
+
 
   const [idCheck, setIdCheck] = useState({
     done: false,
@@ -60,19 +63,52 @@ function Signup() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!form.userId || !form.pw || !form.pw2) {
-      alert("아이디/비밀번호를 입력해주세요.");
-      return;
-    }
-    if (form.pw !== form.pw2) {
-      alert("입력한 비밀번호가 같은지 확인해주세요.");
+    const newErrors = validate();
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      alert(Object.values(newErrors)[0]);
       return;
     }
 
-    // TODO: 회원가입 API 연결
     alert("회원가입 완료(임시)!");
     navigate("/login");
   };
+
+
+
+  const validate = () => {
+    const errors = {};
+
+    // ✅ 필수 입력
+    if (!form.userId.trim()) errors.userId = "아이디는 필수입니다.";
+    if (!form.pw.trim()) errors.pw = "비밀번호는 필수입니다.";
+    if (!form.pw2.trim()) errors.pw2 = "비밀번호 확인은 필수입니다.";
+    if (!form.name.trim()) errors.name = "이름은 필수입니다.";
+    if (!form.phone.trim()) errors.phone = "전화번호는 필수입니다.";
+    if (!form.email.trim()) errors.email = "이메일은 필수입니다.";
+    if (!form.address.trim()) errors.address = "주소는 필수입니다.";
+
+    // ✅ 비밀번호 규칙
+    if (form.pw && form.pw.length < 8) errors.pw = "비밀번호는 8자 이상이어야 합니다.";
+    if (form.pw && !/[0-9]/.test(form.pw)) errors.pw = "비밀번호에 숫자를 1개 이상 포함해야 합니다.";
+    if (form.pw && !/[A-Za-z]/.test(form.pw)) errors.pw = "비밀번호에 영문을 1개 이상 포함해야 합니다.";
+    if (form.pw && form.pw2 && form.pw !== form.pw2) errors.pw2 = "비밀번호가 서로 다릅니다.";
+
+    // ✅ 이메일 형식
+    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      errors.email = "이메일 형식이 올바르지 않습니다.";
+    }
+
+    // ✅ 전화번호 형식(숫자만 10~11자리)
+    const phoneOnly = form.phone.replace(/\D/g, "");
+    if (form.phone && (phoneOnly.length < 10 || phoneOnly.length > 11)) {
+      errors.phone = "전화번호는 숫자만 10~11자 입력해주세요.";
+    }
+
+    return errors;
+  };
+
 
   return (
     <div className={styles.signupWrap}>
@@ -96,7 +132,9 @@ function Signup() {
             <div className={styles.signup_sectionLabel}>기본정보</div>
 
             <div className={styles.fieldRow}>
-              <label>아이디 :</label>
+              <label>아이디 
+                <span className={styles.required}>*</span>
+              </label>
 
              <div className={styles.idArea}>
               <div className={styles.inlineRow}>
@@ -132,7 +170,9 @@ function Signup() {
 
 
             <div className={styles.fieldRow}>
-              <label>비밀번호 :</label>
+              <label>비밀번호 
+                <span className={styles.required}>*</span>
+              </label>
               <input
                 type="password"
                 name="pw"
@@ -140,10 +180,13 @@ function Signup() {
                 onChange={onChange}
                 placeholder="비밀번호"
               />
+              {/* {errors.pw && <p className={styles.errorText}>{errors.pw}</p>}               */}
             </div>
 
             <div className={styles.fieldRow}>
-              <label>비밀번호 확인 :</label>
+              <label>비밀번호 확인 
+                <span className={styles.required}>*</span>
+              </label>
               <input
                 type="password"
                 name="pw2"
@@ -151,10 +194,13 @@ function Signup() {
                 onChange={onChange}
                 placeholder="비밀번호 확인"
               />
+              {/* {errors.pw2 && <p className={styles.errorText}>{errors.pw2}</p>} */}
             </div>
 
             <div className={styles.fieldRow}>
-              <label>이름 :</label>
+              <label>이름 
+                <span className={styles.required}>*</span>
+              </label>
               <input
                 name="name"
                 value={form.name}
@@ -164,7 +210,9 @@ function Signup() {
             </div>
 
             <div className={styles.fieldRow}>
-              <label>주소 :</label>
+              <label>주소 
+                <span className={styles.required}>*</span>
+              </label>
 
               <div className={styles.addressBlock}>
                 <div className={styles.inlineRow}>
@@ -196,7 +244,9 @@ function Signup() {
 
 
             <div className={styles.fieldRow}>
-              <label>전화번호 :</label>
+              <label>전화번호 
+                <span className={styles.required}>*</span>
+              </label>
               <input
                 name="phone"
                 value={form.phone}
@@ -206,7 +256,9 @@ function Signup() {
             </div>
 
             <div className={styles.fieldRow}>
-              <label>이메일 :</label>
+              <label>이메일 
+                <span className={styles.required}>*</span>
+              </label>
               <input
                 name="email"
                 value={form.email}
@@ -215,15 +267,7 @@ function Signup() {
               />
             </div>
 
-            <div className={styles.fieldRow}>
-              <label>소셜연결 :</label>
-              <input
-                name="social"
-                value={form.social}
-                onChange={onChange}
-                placeholder="카카오/네이버 등(선택)"
-              />
-            </div>
+
           </div>
 
           <hr className={styles.divider} />

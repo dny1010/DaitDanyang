@@ -30,6 +30,10 @@
   display: block;
 }
 
+.required{
+  color: red;
+  margin-left: 8px; /* 아이디랑 너무 붙어있으면 살짝 띄우기 */
+}
 
 .section{
   margin-top: 10px;

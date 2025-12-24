@@ -7,6 +7,7 @@ import Category from './components/Category';
 import './App.css'; // 기존 App.css를 유지하여 전체적인 스타일링 가능
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import FindAccount from "./pages/FindAccount";
 import { Route, Routes } from "react-router-dom";
 
 
@@ -20,6 +21,7 @@ function MainLayout() {
       <Routes>
         <Route path="/category/:pet/:sub?" element={<Category items={products} />} />
         <Route path="/form" element={<PostForm />} />
+        <Route path="/find-account" element={<FindAccount />} />
       </Routes>
     </div>
   );

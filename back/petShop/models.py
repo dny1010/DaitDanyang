@@ -95,6 +95,24 @@ class Product(db.Model):
     # 리뷰 개수 (리뷰 작성 시 증가)
     review_count = db.Column(db.Integer, nullable=False, default=0)
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "content": self.content,
+            "price": self.price,
+
+            # 프론트가 item.imgUrl을 쓰고 있으니 imgUrl 키로 내려줌
+            "imgUrl": self.img_url,
+
+            "category": self.category,
+            "sub_category": self.sub_category,
+            "pet_type": self.pet_type,
+
+            "views": self.views,
+            "stock": self.stock,
+            "review_count": self.review_count,
+        }
 
 # ============================================
 # 3. QnA (문의 게시판)

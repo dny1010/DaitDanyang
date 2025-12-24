@@ -15,7 +15,14 @@ export default function Login() {
   const handleLogin = async (e) => {
   e.preventDefault();
 //e.preventDefault() ← 이거 왜 필요? “폼 제출하고 아이디/비번 틀려도 그대로 입력창에 남아있음 / 이거 쓰는 이유는 새로고침 하지말라는 말” 
+  
+// const handleLogout = () => {
+//   localStorage.removeItem("access_token");
+//   localStorage.removeItem("refresh_token");
 
+//   // 로그인 페이지로 이동
+//   navigate("/login");
+// };
   try {
     const res = await axios.post(
       "http://localhost:5000/api/login",
@@ -58,7 +65,6 @@ export default function Login() {
 
         <form onSubmit={handleLogin}>
           <div className={styles.formInner}>
-            {/* ✅ input: 부트스트랩 폼 */}
             <input
               className={`${styles.form_control} form-control mb-3`}
               placeholder="아이디"
@@ -89,20 +95,12 @@ export default function Login() {
 
               <div className="d-flex align-items-center gap-1 small">
                 <Link
-                  to="/find-id"
+                  to="/find-account"
                   className="btn btn-link p-0 text-decoration-none"
                 >
-                  아이디 찾기
+                  아이디/비밀번호 찾기
                 </Link>
 
-                <span className="text-muted">|</span>
-
-                <Link
-                  to="/find-password"
-                  className="btn btn-link p-0 text-decoration-none"
-                >
-                  비밀번호 찾기
-                </Link>
               </div>
             </div>
 

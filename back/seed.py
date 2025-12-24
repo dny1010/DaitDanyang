@@ -2,6 +2,7 @@
 import os
 import json
 from datetime import datetime
+import random
 
 from app import create_app
 from petShop.models import db, Product, Question, User
@@ -9,7 +10,6 @@ from petShop.models import db, Product, Question, User
 # ✅ crawlers/data 경로
 BASE_DATA_DIR = os.path.join(
     os.path.dirname(__file__),
-    "crawlers",
     "data"
 )
 
@@ -113,6 +113,7 @@ with app.app_context():
                 # ✅ category 정리 ("강아지_사료" → "사료")
                 raw_cat = data.get("main_category", "기타")
                 category = raw_cat.split("_")[-1] if "_" in raw_cat else raw_cat
+                sub_category = data.get("sub_category", "")
 
                 product = Product(
                     title=data.get("title", "제목 없음"),
@@ -120,9 +121,10 @@ with app.app_context():
                     price=int(data.get("lprice", 0) or 0),
                     img_url=data.get("image", ""),
                     category=category,
+                    sub_category=sub_category,
                     pet_type=pet_type,
                     stock=100,
-                    views=0,
+                    views=random.randint(100, 1000),
                     review_count=0,
                 )
 
