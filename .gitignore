@@ -21,7 +21,7 @@ logs/
 node_modules/
 build/
 dist/
-src/app.jsx
+front/src/App.jsx
 
 # ===== IDE =====
 .vscode/
