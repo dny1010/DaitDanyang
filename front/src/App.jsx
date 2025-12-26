@@ -10,7 +10,7 @@ import Signup from "./pages/Signup";
 import FindAccount from "./pages/FindAccount";
 import CartPage from "./pages/Cart";
 import OrderComplete from "./pages/OrderComplete/OrderComplete";
-import WishlistPage from "./pages/WishlistPage"; // 2025-12-26: 찜목록 페이지 추가
+import Wishlist from "./components/Wishlist"; // 2025-12-26: 찜목록 컴포넌트 연결
 import MainPage from "./pages/MainPage"; // 2025-12-24: 메인 페이지 복구
 import EventPage from "./pages/EventPage"; // 2025-12-24: 이벤트 페이지 복구
 import CustomerCenterPage from "./pages/CustomerCenterPage"; // 2025-12-24: 고객센터 페이지 복구
@@ -41,7 +41,7 @@ function MainLayout() {
         <Route path="/support" element={<CustomerCenterPage />} /> {/* Navbar의 /support와 매핑 */}
         
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/wishlist" element={<WishlistPage />} /> {/* 찜목록 (마이페이지) */}
+        <Route path="/wishlist" element={<Wishlist />} /> {/* 찜목록 */}
         <Route path="/order/complete" element={<OrderComplete />} />
         <Route path="/form" element={<PostForm />} />
         <Route path="/find-account" element={<FindAccount />} />
