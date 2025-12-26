@@ -9,7 +9,6 @@ import { fetchProducts } from "../api/productApi";
 
 
 // 페이지당 보여줄 개수(= 백에 요청할 limit)
-
 const PER_PAGE = 12;
 
 // 페이지 버튼을 몇 개 묶어서 보여줄지 (1~10, 11~20 이런 식)
@@ -20,23 +19,23 @@ const Category = () => {
   const { pet, sub } = useParams();
   const navigate = useNavigate();
 
-  //화면에 보여줄 실제 상품 목록(= 백에서 받아온 현재 페이지 items)
+  // 화면에 보여줄 실제 상품 목록(= 백에서 받아온 현재 페이지 items)
   const [items, setItems] = useState([]);
 
-  //현재 페이지 번호
+  // 현재 페이지 번호
   const [page, setPage] = useState(1);
 
   // 전체 상품 수 
   const [total, setTotal] = useState(0);
 
-  //usestate 값은 기본으로 어떻게 정렬할지
+  // usestate 값은 기본으로 어떻게 정렬할지
   const [sort, setSort] = useState("id_desc");
 
   // 로딩/에러 처리
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // usememo 내가 일력한 값 현 코드에서는 pet의 값이 변 할 때 마다 다시 실행
+  // usememo 내가 입력한 값 현 코드에서는 pet의 값이 변할 때 마다 다시 실행
   const categories = useMemo(() => {
     return CATEGORY_ORDER?.[pet] ?? [];
   }, [pet]);
@@ -128,7 +127,7 @@ const Category = () => {
           {categories.map((code) => (
             <button
               key={code}
-              // code는 URL sub로 들어감 (/category/dog/feed)
+              // code는 URL sub로 들어감 (/dog/feed)
               onClick={() => navigate(`/category/${pet}/${code}`)}
               className={styles.sub_ctgr}
             >

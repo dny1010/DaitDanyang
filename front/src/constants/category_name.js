@@ -44,7 +44,7 @@ export const CATEGORY = {
   bowl:   { label: "식기", img: `${PUBLIC}/images/category/bowl.png`, db: ["급수기", "식기"] },
   health: { label: "건강관리", img: `${PUBLIC}/images/category/health.png`, db: "건강관리" },
   clothes:{ label: "의류", img: `${PUBLIC}/images/category/clothes.png`, db: ["의류","산책용품"] },
-  life:   { label: "실생활용품", img: `${PUBLIC}/images/category/life.png`, db: "캣타워" },
+  life:   { label: "캣타워", img: `${PUBLIC}/images/category/life.png`, db: "캣타워" },
   toy:    { label: "장난감", img: `${PUBLIC}/images/category/toy.png`, db: "장난감" },
   carrier:{ label: "이동장", img: `${PUBLIC}/images/category/carrier.png`, db: "이동장" },
   litter: { label: "모래", img: `${PUBLIC}/images/category/litter.png`, db: "모래" },
