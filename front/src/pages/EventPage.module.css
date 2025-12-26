@@ -1,0 +1,114 @@
+/* EventPage.module.css */
+
+/* 
+ * Layout Dimensions based on wireframe:
+ * PAGE_WIDTH = 1600
+ * CONTENT_WIDTH = 1200
+ * BANNER_H = 100
+ * GRID_W = 1200
+ * GRID_H = 1420
+ * CARD_W = 570
+ * CARD_H = 310
+ * GRID_GAP = 60
+ */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: #fff; /* 기본 배경 */
+}
+
+.pageInner {
+  width: 1600px; /* PAGE_WIDTH */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* 상단 여백 (Header 제외, Banner 전 여백) */
+/* Header가 MainLayout에 있으므로, Banner 위쪽 여백을 디자인에 맞게 조정해야 합니다.
+   Wireframe: Header -> GAP_190 -> Banner
+   MainLayout Navbar 높이를 고려해야 하지만, 일단 와이어프레임의 GAP_190을 유지하거나 
+   Navbar와의 간격을 위해 조정할 수 있습니다. 여기서는 spacer로 처리하거나 margin으로 처리합니다. */
+.topSpacer {
+  height: 190px; /* GAP_190 */
+}
+
+/* Banner */
+.banner {
+  width: 1200px; /* CONTENT_WIDTH */
+  height: 100px; /* BANNER_H */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 80px; /* GAP_80 */
+  /* 시각적 확인을 위한 임시 스타일 (필요시 제거) */
+  /* border: 1px dashed #ccc;  */
+}
+
+.bannerInner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bannerTitle {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Grid Section */
+.gridSection {
+  width: 1200px; /* GRID_W */
+  /* height는 컨텐츠에 따라 늘어나도록 min-height로 잡거나, 와이어프레임대로 고정할 수 있습니다. 
+     와이어프레임 GRID_H = 1420. */
+  min-height: 1420px; 
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.grid {
+  width: 1200px; /* GRID_W */
+  display: grid;
+  grid-template-columns: 570px 570px; /* CARD_W CARD_W */
+  column-gap: 60px; /* GRID_GAP */
+  row-gap: 60px; /* GRID_GAP */
+  align-content: start;
+  box-sizing: border-box;
+}
+
+.card {
+  width: 570px; /* CARD_W */
+  height: 310px; /* CARD_H */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  
+  /* 카드 스타일 (임시) */
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+/* 하단 여백 */
+.bottomSpacer {
+  height: 70px; /* GAP_70 */
+}
+
+/* ==============================================================================
+   [Gemini 작업 로그] - 2025.12.26
+   1. 레이아웃 스타일 정의
+      - PAGE_WIDTH: 1600px, CONTENT_WIDTH: 1200px 기준.
+      - Event Grid: 2열 배치 (CARD_W: 570px, GAP: 60px).
+      - 상하단 Spacer를 통한 여백 조정.
+   ============================================================================== */

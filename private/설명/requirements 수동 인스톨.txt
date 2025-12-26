@@ -1,0 +1,1 @@
+pip install flask flask-cors sqlalchemy sqlalchemy-utils chromadb openai python-dotenv requests email-validator flask_sqlalchemy

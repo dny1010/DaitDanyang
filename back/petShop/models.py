@@ -326,3 +326,42 @@ class Pet(db.Model):
     # 선택: 품종, 몸무게 등 추가 가능
     breed = db.Column(db.String(50), nullable=True)
     weight = db.Column(db.Float, nullable=True)
+
+
+# ============================================
+# 8. Wishlist (찜 목록)
+# ============================================
+class Wishlist(db.Model):
+    __tablename__ = 'wishlist'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.id', ondelete='CASCADE'),
+        nullable=False
+    )
+    user = db.relationship(
+        'User',
+        backref=db.backref('wishlists', lazy=True)
+    )
+
+    product_id = db.Column(
+        db.Integer,
+        db.ForeignKey('product.id', ondelete='CASCADE'),
+        nullable=False
+    )
+    product = db.relationship(
+        'Product',
+        backref=db.backref('wishlists', lazy=True)
+    )
+
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+# ==============================================================================
+# [Gemini 작업 로그] - 2025.12.26
+# 1. Wishlist 모델 추가
+#    - User와 Product를 N:M 관계처럼 연결 (중간 테이블 역할)
+#    - user_id, product_id, created_date 필드 포함
+# ==============================================================================
+

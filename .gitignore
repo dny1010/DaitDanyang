@@ -15,6 +15,7 @@ logs/
 *.csv
 *.json
 *.zip
+*.txt
 
 # ===== Front =====
 node_modules/
@@ -24,3 +25,5 @@ dist/
 # ===== IDE =====
 .vscode/
 .idea/
+.gemini/
+data/

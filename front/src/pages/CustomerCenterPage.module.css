@@ -1,0 +1,224 @@
+/* CustomerCenterPage.module.css */
+
+/* 
+ * Layout Dimensions based on wireframe:
+ * PAGE_W = 1920
+ * CONTENT_W = 1200
+ * INFO_BOX_W = 520, INFO_BOX_H = 320
+ * BAR_W = 1200, CATEGORY_BAR_H = 60
+ * SEARCH_BAR_H = 50
+ * BOARD_W = 1200, BOARD_H = 520
+ * Gaps: 20, 30, 40
+ */
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+}
+
+.pageInner {
+  width: 1920px; /* PAGE_W */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* 상단 여백 (Navbar와의 간격) */
+/* 와이어프레임 Header는 제거하므로, 적절한 상단 여백이 필요할 수 있습니다. 
+   와이어프레임 로직상 Header 밑에 GAP_20이 있으므로 이를 유지합니다. */
+.topSpacer {
+  height: 20px; /* GAP_20 */
+}
+
+.pageTitle {
+  width: 1200px; /* CONTENT_W */
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px; /* GAP_20 */
+}
+
+/* Top Info Bar (One line) */
+.topInfoBar {
+  width: 1200px; /* CONTENT_W */
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 30px; /* GAP */
+}
+
+/* Category Tabs */
+.categoryTabs {
+  width: 1200px; /* BAR_W */
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tabItem {
+  width: 200px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  color: #777;
+  transition: all 0.2s;
+}
+
+.tabItem:hover {
+  color: #333;
+  background-color: #fafafa;
+}
+
+.activeTab {
+  color: #000;
+  border-bottom: 3px solid #333;
+}
+
+/* Board Search Bar */
+.boardSearchBar {
+  width: 1200px; /* BAR_W */
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  width: 400px;
+  height: 40px;
+  padding: 0 15px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.searchBtn {
+  height: 40px;
+  padding: 0 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+
+/* Board Wrap */
+.boardWrap {
+  width: 1200px; /* BOARD_W */
+  min-height: 520px; /* BOARD_H를 min-height로 변경 */
+  display: flex;
+  flex-direction: column;
+  
+  /* 임시 스타일 */
+  border: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.boardHeader {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  border-bottom: 2px solid #333;
+}
+
+.boardBody {
+  width: 100%;
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pageBtn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pageBtn:hover {
+  background-color: #f0f0f0;
+}
+
+.activePageBtn {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #333;
+}
+
+/* ==============================================================================
+   [Gemini 작업 로그] - 2025.12.26
+   1. 스타일 레이아웃 개편
+      - TopInfoBar (고객센터 이용안내 한 줄 바) 스타일 추가.
+      - CategoryTabs (탭 형태의 메뉴) 및 Active 상태 스타일 추가.
+      - Pagination (게시판 하단 네비게이션 버튼) 스타일 추가.
+   2. 레이아웃 겹침 해결
+      - boardWrap의 높이를 min-height로 변경하여 컨텐츠가 푸터를 침범하지 않도록 수정.
+   ============================================================================== */
+
+
+.boardTableHead {
+  display: flex;
+  font-weight: 700;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.boardTableRows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto; /* 내용 많을 시 스크롤 */
+}
+
+.boardRow {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 하단 여백 */
+.bottomSpacer {
+  height: 40px; /* GAP_40 */
+}

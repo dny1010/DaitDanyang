@@ -1,0 +1,26 @@
+react
+npx create-react-app FRONT / 이미 front 폴더를 이미 만들어 두었으면  npx create-react-app .
+npm install axios  axios는 flask와 react의 길이 달라 서로한테 도달하지 못 하는데 길을 찾아 올바른곳으로 안내하는 도구
+
+flask 
+pip install flask-cors
+리콰이어먼트에서 이미 깔아서 다시 깔 필요는 없음
+
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+리액트가 3000번에서 호출해도 돼!”라고 허락하는 코드
+
+@app.route("/api/chat", methods=["POST"])
+def chat():
+    data = request.get_json()  # React에서 보낸 JSON 받기
+    message = data.get("message")  # message 키 값 꺼내기
+
+    print("React가 보낸 메시지:", message)
+
+    return jsonify({"reply": f"너가 보낸: {message}"})
+이 부분이 리엑트에서 보낸 걸 플라스크 문법으로 받는법
+
