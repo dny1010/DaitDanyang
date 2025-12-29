@@ -19,11 +19,9 @@ const STATUS_OPTIONS = [
 ];
 
 const QUICK_RANGES = [
-  { key: "today", label: "오늘", days: 0 },
   { key: "7d", label: "1주일", days: 7 },
   { key: "1m", label: "1개월", days: 30 },
   { key: "3m", label: "3개월", days: 90 },
-  { key: "6m", label: "6개월", days: 180 },
 ];
 
 // ✅ 더미 주문 데이터 (나중에 API 응답으로 대체)
@@ -169,47 +167,49 @@ export default function OrderList() {
 
       {/* 상단 필터 */}
       <div className={styles.filterBar}>
-        <select
-          className={styles.select}
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        >
-          {STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        <div className={styles.filterLeft}>
+          <select
+            className={styles.select}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            {STATUS_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
 
-        <div className={styles.quickBtns}>
-          {QUICK_RANGES.map((r) => (
-            <button
-              key={r.key}
-              className={styles.quickBtn}
-              type="button"
-              onClick={() => handleQuickRange(r.days)}
-            >
-              {r.label}
-            </button>
-          ))}
+
+          <div className={styles.quickBtns}>
+            {QUICK_RANGES.map((r) => (
+              <button
+                key={r.key}
+                className={styles.quickBtn}
+                type="button"
+                onClick={() => handleQuickRange(r.days)}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+
+          <div className={styles.dateRange}>
+            <input
+              className={styles.dateInput}
+              type="date"
+              value={fromDate}
+              onChange={(e) => setFromDate(e.target.value)}
+            />
+            <span className={styles.tilde}>~</span>
+            <input
+              className={styles.dateInput}
+              type="date"
+              value={toDateStr}
+              onChange={(e) => setToDateStr(e.target.value)}
+            />
+          </div>
         </div>
-
-        <div className={styles.dateRange}>
-          <input
-            className={styles.dateInput}
-            type="date"
-            value={fromDate}
-            onChange={(e) => setFromDate(e.target.value)}
-          />
-          <span className={styles.tilde}>~</span>
-          <input
-            className={styles.dateInput}
-            type="date"
-            value={toDateStr}
-            onChange={(e) => setToDateStr(e.target.value)}
-          />
-        </div>
-
         <button className={styles.searchBtn} type="button">
           조회
         </button>

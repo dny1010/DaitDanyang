@@ -165,7 +165,6 @@ export default function Cart() {
         <div>상품정보</div>
         <div>판매가</div>
         <div>수량</div>
-        <div>적립금</div>
         <div>배송구분</div>
         <div>합계</div>
       </div>
@@ -216,7 +215,6 @@ export default function Cart() {
               </button>
             </div>
 
-            <div>{Math.floor(x.price * 0.01).toLocaleString()}원</div>
             <div>기본배송</div>
             <div className={styles.sum}>
               {(x.price * x.qty).toLocaleString()}원

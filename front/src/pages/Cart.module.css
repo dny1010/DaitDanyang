@@ -14,7 +14,7 @@
 .cartHeader {
   display: grid;
   grid-template-columns:
-    50px 110px 1fr 120px 120px 120px 120px 120px;
+    50px 110px 1fr 120px 120px 120px 120px;
   background-color: #e9f2fb;
   padding: 12px 10px;
   font-weight: 700;
@@ -25,7 +25,7 @@
 .cartRow {
   display: grid;
   grid-template-columns:
-    50px 110px 1fr 120px 120px 120px 120px 120px;
+    50px 110px 1fr 120px 120px 120px 120px;
   padding: 14px 10px;
   border-bottom: 1px solid #eee;
   align-items: center;
