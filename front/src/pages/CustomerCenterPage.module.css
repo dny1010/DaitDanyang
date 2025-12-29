@@ -49,12 +49,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f5f5;
+  /* Blue Theme Background */
+  background-color: #E8EEF8; 
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 500;
-  color: #333;
+  color: #556677; /* Soft Dark Blue */
   margin-bottom: 30px; /* GAP */
+  border: 1px solid #D5E5F3;
 }
 
 /* Category Tabs */
@@ -77,18 +79,18 @@
   font-weight: 700;
   cursor: pointer;
   border-bottom: 3px solid transparent;
-  color: #777;
+  color: #8fa0b0;
   transition: all 0.2s;
 }
 
 .tabItem:hover {
-  color: #333;
-  background-color: #fafafa;
+  color: #556677;
+  background-color: #f4faff;
 }
 
 .activeTab {
-  color: #000;
-  border-bottom: 3px solid #333;
+  color: #556677;
+  border-bottom: 3px solid #BBD2E6; /* Active Color */
 }
 
 /* Board Search Bar */
@@ -106,22 +108,32 @@
   height: 40px;
   padding: 0 15px;
   font-size: 1rem;
-  border: 1px solid #ddd;
+  border: 1px solid #D5E5F3;
   border-radius: 4px;
   margin-right: 10px;
+  color: #555;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #BBD2E6;
 }
 
 .searchBtn {
   height: 40px;
   padding: 0 20px;
-  background-color: #333;
+  background-color: #BBD2E6; /* Theme Button Color */
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-weight: 700;
+  transition: background-color 0.2s;
 }
 
+.searchBtn:hover {
+  background-color: #a0c0da; /* Darker hover */
+}
 
 /* Board Wrap */
 .boardWrap {
@@ -131,7 +143,8 @@
   flex-direction: column;
   
   /* 임시 스타일 */
-  border: 1px solid #eee;
+  border: 1px solid #E8EEF8;
+  border-top: 2px solid #BBD2E6; /* Top Border Emphasis */
   margin-bottom: 20px;
 }
 
@@ -143,7 +156,8 @@
   justify-content: center;
   font-size: 24px;
   font-weight: 700;
-  border-bottom: 2px solid #333;
+  color: #556677;
+  border-bottom: 1px solid #D5E5F3;
 }
 
 .boardBody {
@@ -171,20 +185,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ddd;
+  border: 1px solid #D5E5F3;
   background-color: #fff;
   cursor: pointer;
   border-radius: 4px;
+  color: #777;
 }
 
 .pageBtn:hover {
-  background-color: #f0f0f0;
+  background-color: #E8EEF8;
 }
 
 .activePageBtn {
-  background-color: #333;
+  background-color: #BBD2E6;
   color: #fff;
-  border: 1px solid #333;
+  border: 1px solid #BBD2E6;
 }
 
 /* ==============================================================================
@@ -202,7 +217,8 @@
   display: flex;
   font-weight: 700;
   padding-bottom: 10px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #D5E5F3;
+  color: #667788;
 }
 
 .boardTableRows {
@@ -215,7 +231,12 @@
 .boardRow {
   display: flex;
   padding: 8px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f8ff;
+  color: #555;
+}
+
+.boardRow:hover {
+  background-color: #f9fcff;
 }
 
 /* 하단 여백 */

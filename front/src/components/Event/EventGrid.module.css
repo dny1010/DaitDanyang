@@ -1,0 +1,75 @@
+/* EventGrid.module.css */
+
+.gridSection {
+  width: 1200px;
+  min-height: 1420px; 
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  padding-bottom: 50px;
+}
+
+.grid {
+  width: 1200px;
+  display: grid;
+  grid-template-columns: 570px 570px;
+  column-gap: 60px;
+  row-gap: 60px;
+  align-content: start;
+  box-sizing: border-box;
+}
+
+/* Event Card Design (Blue Theme) */
+.card {
+  width: 570px;
+  height: 310px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 30px;
+  
+  background: #FFFFFF;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(187, 210, 230, 0.2); 
+  border: 1px solid #D5E5F3; 
+  
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(187, 210, 230, 0.4);
+  border-color: #BBD2E6; 
+}
+
+.cardTitle {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #556677;
+  margin-bottom: 10px;
+  z-index: 2;
+  letter-spacing: 0px;
+}
+
+.cardDate {
+  font-size: 1rem;
+  color: #8fa0b0;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.cardBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #E8EEF8 0%, #D5E5F3 100%);
+  z-index: 1;
+  opacity: 0.4;
+}
