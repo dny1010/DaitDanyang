@@ -1,6 +1,6 @@
 .signupWrap{
   min-height: 100vh;
-  background:#e9e9e9;
+  background:#f3f6fb; /* 로그인과 비슷한 연한 배경 */
   display:flex;
   align-items:center;
   justify-content:center;
@@ -11,99 +11,117 @@
   width: 100%;
   max-width: 720px;
   background:#fff;
-  border: 1px solid #bfbfbf;
-  padding: 22px;
-  border-radius: 14px;
+  border: 1px solid #d7e0ef;
+  padding: 28px 26px;
+  border-radius: 18px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
 }
 
 .signupHeader{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
+  font-weight: 700;
+  color: #3b5fcc;
 }
 
 .brandImage{
-  width: 260px;        /* 원하는 크기 */
+  width: 260px;
   max-width: 100%;
   height: auto;
   display: block;
 }
 
 .required{
-  color: red;
-  margin-left: 8px; /* 아이디랑 너무 붙어있으면 살짝 띄우기 */
+  color: #e53935;
+  margin-left: 6px;
 }
 
 .section{
-  margin-top: 10px;
+  margin-top: 18px;
 }
 
+/* 섹션 라벨 */
 .signup_sectionLabel{
   display:inline-block;
-  border: 2px solid #999;
-  padding: 6px 16px;
-  border-radius: 4px;
+  border: 1.5px solid #3b5fcc;
+  color:#3b5fcc;
+  padding: 6px 18px;
+  border-radius: 20px;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  font-size: 14px;
 }
 
 .fieldRow{
   display: grid;
-  grid-template-columns: 140px 1fr; /* 라벨폭 고정(원하는 만큼 조절) */
+  grid-template-columns: 140px 1fr;
   column-gap: 24px;
-  align-items: start;              /* ✅ 메시지(helpText) 때문에 start가 좋아 */
-  margin: 18px 0;                  /* 행 간격 */
+  align-items: start;
+  margin: 18px 0;
 }
 
 .fieldRow > label{
-  text-align: left;                /* ✅ 라벨 왼쪽정렬 */
-  justify-self: start;             /* ✅ 그리드에서 왼쪽으로 붙이기 */
-  padding-top: 10px;               /* 입력칸 높이랑 라벨 수직 맞춤 */
-  color: #666;
+  text-align: left;
+  justify-self: start;
+  padding-top: 10px;
+  color: #555;
   font-size: 14px;
+  font-weight: 600;
 }
 
-
-/* 모든 입력류 공통 (input/select) */
+/* input / select 공통 */
 .fieldRow input,
 .fieldRow select{
   width: 100%;
   border: none;
-  border-bottom: 1px solid #d9d9d9;   /* ✅ 밑줄 */
-  border-radius: 0;                   /* ✅ 둥근 모서리 제거 */
+  border-bottom: 1.5px solid #d0d7e6;
+  border-radius: 0;
   padding: 10px 6px;
   outline: none;
-  background: transparent;            /* ✅ 박스 느낌 제거 */
+  background: transparent;
   font-size: 14px;
+  transition: border-color .2s;
 }
 
-/* 포커스(클릭)했을 때 밑줄 강조 */
+.fieldRow input::placeholder{
+  color:#aaa;
+}
+
 .fieldRow input:focus,
 .fieldRow select:focus{
-  border-bottom-color: #111;
+  border-bottom-color: #3b5fcc; /* 로그인 톤 블루 */
 }
 
-
 .divider{
-  margin: 18px 0;
+  margin: 26px 0;
   border: none;
-  border-top: 2px solid #333;
+  border-top: 1px solid #e3e8f3;
 }
 
 .submitRow{
   display:flex;
   justify-content:center;
-  margin-top: 24px;
+  margin-top: 32px;
 }
 
+/* 회원가입 버튼 */
 .btnSignup{
-  min-width: 160px;
-  height: 44px;
-  border: 1px solid #9bbad1;
-  background:#fff !important; /*  !important하는 이유? 부트스트랩이 더 세서 색깔이 안먹힘 그래서 덮어쓰는 용도로 사용함  */
-  border-radius: 6px;
-  font-weight: 800;
+  min-width: 180px;
+  height: 46px;
+  border: none;
+  background:#3b5fcc !important;
+  color:#fff;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor:pointer;
+  transition: background .2s;
+}
+
+.btnSignup:hover{
+  background:#2f4fb8 !important;
 }
 
 /* input + 버튼 한 줄 */
@@ -114,20 +132,27 @@
   align-items: center;
 }
 
-/* 주소는 2줄(주소+버튼 / 상세주소) */
+/* 주소 블록 */
 .addressBlock{
   display: flex;
   flex-direction: column;
 }
 
-/* inline 버튼 */
+/* inline 버튼 (중복확인/주소검색) */
 .btnInline{
   height: 40px;
-  border: 1px solid #9bbad1;
+  border: 1.5px solid #3b5fcc;
   background: #fff !important;
-  border-radius: 8px;
-  font-weight: 800;
+  color:#3b5fcc;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all .2s;
+}
+
+.btnInline:hover{
+  background:#3b5fcc !important;
+  color:#fff;
 }
 
 .mt8{ margin-top: 8px; }
@@ -136,7 +161,8 @@
   display: flex;
   flex-direction: column;
 }
-/* 중복확인 메시지 */
+
+/* 도움/에러 메시지 */
 .helpText {
   font-size: 13px;
   margin-top: 6px;
@@ -144,10 +170,9 @@
 }
 
 .ok {
-  color: green;
+  color: #2e7d32;
 }
 
 .bad {
-  color: red;
+  color: #d32f2f;
 }
-

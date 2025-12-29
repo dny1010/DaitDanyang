@@ -1,7 +1,8 @@
 /* Product.module.css */
 .content {
     width: 1200px;
-    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
 }
 
 .product {
@@ -14,5 +15,111 @@
 }
 
 .text {
-    width: 700px;
+    width: 600px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+}
+
+.label {
+    width: 90px;
+    color: #777;
+    font-size: 16px;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.value {
+    font-size: 16px;
+}
+
+.button {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.wishBtn {
+    width: 52px;
+    border: 1px solid #bbd2e6;
+    background: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    padding: 10px 0;
+}
+
+.cartBtn {
+    flex: 1;
+    border: 1px solid #bbd2e6;
+    background: #fff;
+    border-radius: 10px;
+    font-weight: 700;
+    padding: 10px 0;
+}
+
+.buyBtn {
+    flex: 1;
+    border: 0;
+    background: #bbd2e6;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 800;
+    padding: 10px 0;
+}
+
+.detailNav {
+    display: flex;
+    border: 1px solid #ddd;
+    margin-top: 30px;
+    position: sticky;
+    top: 0;
+}
+
+.detailNav button {
+    flex: 1;
+    padding: 12px 0;
+    border: none;
+    background: #e8eef8;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.detailNav button:not(:last-child) {
+  border-right: 1px solid #ccc;
+}
+
+.detailNav button.active {
+  background: white;
+  font-weight: 700;
+  margin-bottom: -1px;
+  border-bottom: 2px solid #fff;
+}
+
+.detailpage {
+    text-align: left;
+    padding: 20px 0;
+}
+
+.infoList {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.8;
+    list-style: none;
+}
+
+.infoList li {
+    margin-bottom: 6px;
 }

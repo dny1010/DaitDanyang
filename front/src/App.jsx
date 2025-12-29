@@ -19,7 +19,7 @@ import MyPageLayout from "./pages/MyPage/MyPageLayout";
 // 쇼핑정보
 import OrderList from "./pages/MyPage/shopping/OrderList";
 import ReturnCancel from "./pages/MyPage/shopping/ReturnCancel";
-// 여기에 쇼핑리스트페이지 들어가야함~~~~
+import WishlistPage from "./pages/MyPage/shopping/Wishlist"; 
 
 // 회원정보
 import EditProfile from "./pages/MyPage/member/EditProfile";
@@ -29,12 +29,12 @@ import Withdraw from "./pages/MyPage/member/Withdraw";
 import MyQna from "./pages/MyPage/MyQna";
 import MyReview from "./pages/MyPage/MyReview";
 
-import Footer from './components/Footer'; // 2025-12-24: 공통 푸터 임포트
-import WishlistPage from "./pages/WishlistPage"; // 2025-12-26: 찜목록 페이지 추가
-import MainPage from "./pages/MainPage"; // 2025-12-24: 메인 페이지 복구
-import EventPage from "./pages/EventPage"; // 2025-12-24: 이벤트 페이지 복구
-import CustomerCenterPage from "./pages/CustomerCenterPage"; // 2025-12-24: 고객센터 페이지 복구
-import Chatbot from "./components/Chatbot"; // 2025-12-24: 챗봇 복구
+
+import Footer from './components/Footer'; 
+import MainPage from "./pages/MainPage"; 
+import EventPage from "./pages/EventPage"; 
+import CustomerCenterPage from "./pages/CustomerCenterPage"; 
+import Chatbot from "./components/Chatbot"; 
 import Noticeboard from "./components/Noticeboard";
 import Order from "./components/Order";
 
@@ -86,7 +86,8 @@ export default function App() {
             <Route path="shopping/orders" element={<OrderList />} />
             <Route path="shopping/returns" element={<ReturnCancel />} />
             {/* <Route path="shopping/wishlist" element={<WishList />} /> */}
-            <Route path="/wishlist" element={<WishlistPage />} /> {/* 찜목록 (마이페이지) */}
+
+            <Route path="shopping/wishlist" element={<WishlistPage />} /> {/* 찜목록 (마이페이지) */}
 
             <Route path="member/edit" element={<EditProfile />} />
             <Route path="member/withdraw" element={<Withdraw />} />

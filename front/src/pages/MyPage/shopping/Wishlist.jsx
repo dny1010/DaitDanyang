@@ -15,8 +15,8 @@ export default function Wishlist() {
 
   // 1. Load Data on Mount
   useEffect(() => {
-    const token = localStorage.getItem("token"); 
-    
+    const token = localStorage.getItem("token");
+
     if (token) {
       setIsLoggedIn(true);
       fetchServerWishlist(token);
@@ -95,66 +95,43 @@ export default function Wishlist() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.pageInner}>
-        {/* 상단 여백 */}
-        <div style={{ height: "60px" }} />
+      <div className={styles.title}>
+        {isLoggedIn ? "회원" : "비회원"}님의 찜 목록
+      </div>
 
-        <div className={styles.bodyRow}>
-          {/* 나중에 사이드바가 들어갈 빈 공간 */}
-          <aside className={styles.sidebarSpacer} />
+      <div className={styles.toolbar}>
+        <input
+          type="text"
+          className={styles.searchInList}
+          placeholder="찜목록 안에서 검색"
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+        <button className={styles.sortBtn} onClick={toggleSort}>
+          {sortOrder === "latest" ? "최신순" : "이름순"}
+        </button>
+      </div>
 
-          {/* 우측 찜 목록 본문 */}
-          <main className={styles.mainContent}>
-            <div className={styles.title}>
-              {isLoggedIn ? "회원" : "비회원"}님의 찜 목록
+      <div className={styles.listArea}>
+        {filteredItems.length > 0 ? (
+          filteredItems.map((it) => (
+            <div key={it.id} className={styles.listItem}>
+              <span style={{ fontWeight: "bold", marginRight: "10px" }}>
+                [{it.category || "상품"}]
+              </span>
+              {it.title}
+              <span style={{ marginLeft: "auto", fontSize: "0.9rem", color: "#888" }}>
+                {it.price ? `${it.price.toLocaleString()}원` : ""}
+              </span>
             </div>
-
-            <div className={styles.toolbar}>
-              <input
-                type="text"
-                className={styles.searchInList}
-                placeholder="찜목록 안에서 검색"
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
-              <button className={styles.sortBtn} onClick={toggleSort}>
-                {sortOrder === "latest" ? "최신순" : "이름순"}
-              </button>
-            </div>
-
-            <div className={styles.listArea}>
-              {filteredItems.length > 0 ? (
-                filteredItems.map((it) => (
-                  <div key={it.id} className={styles.listItem}>
-                    <span style={{ fontWeight: "bold", marginRight: "10px" }}>
-                      [{it.category || "상품"}]
-                    </span>
-                    {it.title}
-                    <span style={{ marginLeft: "auto", fontSize: "0.9rem", color: "#888" }}>
-                      {it.price ? `${it.price.toLocaleString()}원` : ""}
-                    </span>
-                  </div>
-                ))
-              ) : (
-                <div style={{ textAlign: "center", padding: "20px", color: "#999" }}>
-                  검색 결과가 없습니다.
-                </div>
-              )}
-            </div>
-          </main>
-        </div>
-        
-        {/* 하단 여백 */}
-        <div style={{ height: "70px" }} />
+          ))
+        ) : (
+          <div style={{ textAlign: "center", padding: "20px", color: "#999" }}>
+            검색 결과가 없습니다.
+          </div>
+        )}
       </div>
     </div>
   );
+
 }
-
-
-// ==============================================================================
-// [Gemini 작업 로그] - 2025.12.26
-// 1. 컴포넌트화: WishlistPage.jsx에서 사이드바 제거 및 독립 컴포넌트로 분리.
-// 2. 위치 변경: pages/WishlistPage.jsx -> components/Wishlist.jsx
-// 3. 기능: 찜 목록 조회, 검색, 정렬 기능 유지.
-// ==============================================================================

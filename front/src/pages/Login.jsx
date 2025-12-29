@@ -43,7 +43,7 @@ export default function Login() {
 
 
   return (
-    <div className={`${styles.lpoginWrap} d-flex min-vh-100 align-items-center justify-content-center py-4`}>
+    <div className={`${styles.loginWrap} d-flex min-vh-100 align-items-center justify-content-center py-4`}>
       {/* card + shadow + rounded는 부트스트랩, 크기/배경/보더는 Login.css에서 */}
       <div className={`${styles.loginCard} card shadow rounded-4 p-4`}>
         {/* 상단 브랜드 박스(기존 디자인 유지) */}

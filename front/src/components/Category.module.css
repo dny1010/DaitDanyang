@@ -35,6 +35,13 @@
     object-fit: contain;
 }
 
+.sortbtn {
+    width: 1200px;
+    background-color: #d5e5f3;
+    /* display: flex;
+    justify-content: flex-end; */
+}
+
 .container {
     width: 1200px;
 }

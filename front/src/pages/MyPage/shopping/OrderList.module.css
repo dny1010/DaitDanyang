@@ -1,0 +1,220 @@
+.wrap {
+  padding: 24px;
+}
+
+.title {
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.filterBar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 14px;
+  border: 1px solid #e6e6e6;
+  background: #fafafa;
+}
+
+.select {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d8d8d8;
+  background: #fff;
+}
+
+.quickBtns {
+  display: flex;
+  gap: 6px;
+}
+
+.quickBtn {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d8d8d8;
+  background: #fff;
+  cursor: pointer;
+}
+
+.dateRange {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.dateInput {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid #d8d8d8;
+  background: #fff;
+}
+
+.tilde {
+  color: #666;
+}
+
+.searchBtn {
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid #444;
+  background: #444;
+  color: #fff;
+  cursor: pointer;
+}
+
+.notice {
+  margin: 12px 0 18px;
+  padding-left: 18px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.list {
+  border: 1px solid #e6e6e6;
+  background: #fff;
+}
+
+.headerRow {
+  display: grid;
+  grid-template-columns: 150px 120px 1fr 70px 140px 160px 140px;
+  border-bottom: 1px solid #e6e6e6;
+  background: #f6f6f6;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.headerRow > div {
+  padding: 12px;
+  border-right: 1px solid #eee;
+}
+
+.headerRow > div:last-child {
+  border-right: none;
+}
+
+.empty {
+  padding: 30px;
+  text-align: center;
+  color: #777;
+}
+
+.orderGroup {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  border-bottom: 1px solid #eee;
+}
+
+.orderMeta {
+  padding: 14px 12px;
+  border-right: 1px solid #eee;
+  background: #fcfcfc;
+}
+
+.orderDate {
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.orderIdLink {
+  font-size: 13px;
+  color: #0b57d0;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.orderItems {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemRow {
+  display: grid;
+  grid-template-columns: 120px 1fr 70px 140px 160px 140px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.itemRow:last-child {
+  border-bottom: none;
+}
+
+.colImg,
+.colInfo,
+.colQty,
+.colPrice,
+.colStatus,
+.colAction {
+  padding: 12px;
+  border-right: 1px solid #f3f3f3;
+}
+
+.itemRow > div:last-child {
+  border-right: none;
+}
+
+.thumb {
+  width: 84px;
+  height: 110px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+.itemName {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.itemOption {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.itemSubActions {
+  display: flex;
+  gap: 8px;
+}
+
+.statusText {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.trackingLink {
+  display: inline-block;
+  font-size: 13px;
+  color: #0b57d0;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.grayBtn {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #d8d8d8;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.darkBtn {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #333;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.dash {
+  color: #777;
+}

@@ -143,8 +143,7 @@ const Category = () => {
       )}
 
       {/* 백에서 정한 정렬방식 이용 */}
-      <div>
-        
+      <div className={styles.sortbtn}>
         <Button variant="light" onClick={() => setSort("views_desc")}>조회순</Button>{" "}
         <Button variant="light" onClick={() => setSort("price_asc")}>낮은 가격 순</Button>{" "}
         <Button variant="light" onClick={() => setSort("price_desc")}>높은 가격 순</Button>{" "}
