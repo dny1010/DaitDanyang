@@ -1,6 +1,6 @@
 // front/src/pages/Category.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { Row, Col, Container, Button, Pagination, Spinner, Alert } from "react-bootstrap";
+import { Row, Col, Container, Pagination, Spinner, Alert } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 
 import styles from "./Category.module.css";
@@ -123,7 +123,7 @@ const Category = () => {
     <div className={styles.category}>
       {/* 상단 서브카테고리 버튼 영역 (sub가 있는 경우에도 항상 보여주기 가능) */}
       {categories.length > 0 && (
-        <div className={`d-flex justify-content-between align-items-center ${styles.sub}`}>
+        <div className={`d-flex justify-content-center align-items-center ${styles.sub}`}>
           {categories.map((code) => (
             <button
               key={code}
@@ -144,10 +144,10 @@ const Category = () => {
 
       {/* 백에서 정한 정렬방식 이용 */}
       <div className={styles.sortbtn}>
-        <Button variant="light" onClick={() => setSort("price_asc")}>낮은 가격 순</Button>{" "}
-        <Button variant="light" onClick={() => setSort("price_desc")}>높은 가격 순</Button>{" "}
-        <Button variant="light" onClick={() => setSort("review_count_desc")}>리뷰 많은순</Button>{" "}
-        <Button variant="light" onClick={() => setSort("views_desc")}>조회순</Button>{" "}
+        <button className={sort === "price_asc" ? styles.active : styles.inactive} onClick={() => setSort("price_asc")}>낮은 가격 순</button>{" "}
+        <button className={sort === "price_desc" ? styles.active : styles.inactive} onClick={() => setSort("price_desc")}>높은 가격 순</button>{" "}
+        <button className={sort === "review_count_desc" ? styles.active : styles.inactive} onClick={() => setSort("review_count_desc")}>리뷰 많은순</button>{" "}
+        <button className={sort === "views_desc" ? styles.active : styles.inactive} onClick={() => setSort("views_desc")}>조회순</button>{" "}
         {/* 기본이 상품 고유아이디 번호 순이여서 리뷰 많은 순 으로 대체 하였음 아직 리뷰가 없어서 변별력은없음  */}
       </div>
 
@@ -194,7 +194,7 @@ const Category = () => {
 
             {/* 페이지네이션 (페이지가 2 이상일 때만 표시) */}
             {totalPages > 1 && (
-              <div className="d-flex justify-content-center mt-4">
+              <div className="d-flex justify-content-center mt-5">
                 <Pagination className={styles.category_pagination}>
                   <Pagination.First onClick={() => setPage(1)} disabled={page === 1} />
                   <Pagination.Prev
