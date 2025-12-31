@@ -307,9 +307,12 @@ const Product = () => {
                         <div className={styles.revbtn}>
                             <h4>상품후기</h4>
                             <div>
-                                <button className={styles.revsort} onClick={() => { setSort("id_desc"); setPage(1); }}>최신순</button>
-                                <button className={styles.revsort} onClick={() => { setSort("rating_desc"); setPage(1); }}>별점 높은순</button>
-                                <button className={styles.revsort} onClick={() => { setSort("rating_asc"); setPage(1); }}>별점 낮은순</button>
+                                <button className={`${styles.revsort} ${sort === "id_desc" ? styles.active : styles.inactive
+                                    }`} onClick={() => { setSort("id_desc"); setPage(1); }}>최신순</button>
+                                <button className={`${styles.revsort} ${sort === "rating_desc" ? styles.active : styles.inactive
+                                    }`} onClick={() => { setSort("rating_desc"); setPage(1); }}>별점 높은순</button>
+                                <button className={`${styles.revsort} ${sort === "rating_asc" ? styles.active : styles.inactive
+                                    }`} onClick={() => { setSort("rating_asc"); setPage(1); }}>별점 낮은순</button>
                             </div>
                         </div>
                         {reverr && (
