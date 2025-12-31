@@ -2,44 +2,40 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import { login } from "../api/authApi";
 
 
 export default function Login() {
   const [userId, setUserId] = useState("");
   const [pw, setPw] = useState("");
   const [auto, setAuto] = useState(false);
+  const [error, setError] = useState(""); // ✅ 에러 표시용
   const navigate = useNavigate();
 
-
   const handleLogin = async (e) => {
-  e.preventDefault();
-//e.preventDefault() ← 이거 왜 필요? “폼 제출하고 아이디/비번 틀려도 그대로 입력창에 남아있음 / 이거 쓰는 이유는 새로고침 하지말라는 말” 
-  
-// const handleLogout = () => {
-//   localStorage.removeItem("access_token");
-//   localStorage.removeItem("refresh_token");
+    e.preventDefault();
+    setError("");
 
-//   // 로그인 페이지로 이동
-//   navigate("/login");
-// };
-  try {
-    const res = await axios.post(
-      "http://localhost:5000/api/login",
-      {
-        userId,
-        password: pw,
-      }
-    );
+    try {
+      // ✅ 1) 백으로 아이디/비번 보내기
+      const data = await login({ user_id: userId, password: pw });
 
-    console.log(res.data);
+      // ✅ 2) 백이 준 토큰 저장 (프론트는 생성 X, 저장 O)
+      localStorage.setItem("accessToken", data.access_token);
 
-    // 성공 시만 이동
-    navigate("/");
-  } catch (err) {
-    alert("로그인 실패");
-  }
-};
+      // (선택) 자동로그인이면 나중에 refresh/cookie 설계로 가는 게 정석
+      // 지금은 accessToken만 저장해도 동작은 함
+
+      // ✅ 3) 로그인 성공 후 이동
+      navigate("/");
+    } catch (err) {
+      const msg =
+        err?.response?.data?.msg ||
+        err?.response?.data?.message ||
+        "로그인에 실패했습니다.";
+      setError(msg);
+    }
+  };
 
 
   return (
@@ -81,6 +77,7 @@ export default function Login() {
               onChange={(e) => setPw(e.target.value)}
               autoComplete="current-password"
             />
+            {error && <div className="text-danger small mb-2">{error}</div>}
 
             {/* ✅ 자동로그인 / 아이디찾기: 부트스트랩 유틸 */}
             <div className="d-flex align-items-center justify-content-between gap-2 mb-3">
