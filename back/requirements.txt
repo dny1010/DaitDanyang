@@ -10,3 +10,4 @@ chromadb
 python-dotenv
 requests
 email-validator
+flask-jwt-extended

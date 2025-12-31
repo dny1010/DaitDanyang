@@ -66,9 +66,8 @@ function Navbar() {
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className={styles.logoutButton /* 없으면 제거 */}
-                >
-                  로그아웃
+                  
+                >로그아웃
                 </button>
               </>
             ) : (

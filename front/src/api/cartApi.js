@@ -29,5 +29,6 @@ export async function updateCart(cartId, count) {
 
 // 장바구니 상품 삭제
 export async function removeCart(cartId) {
-  return client.delete(`/api/cart/${cartId}`);
+  const res = await client.delete(`/api/cart/${cartId}`);
+  return res.data
 }

@@ -1,44 +1,11 @@
 from flask import Blueprint, request, jsonify, current_app
 from petShop.models import Wishlist, Product, User, db
-from functools import wraps
-import jwt
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 bp = Blueprint('wishlist', __name__, url_prefix='/api/wishlist')
 
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.headers.get('Authorization')
-        if not token:
-            return jsonify({'message': 'Token is missing!'}), 401
-        try:
-            if token.startswith('Bearer '):
-                token = token.split(" ")[1]
-            # SECRET_KEY가 app config에 없으면 기본값 사용 (주의: 보안상 환경변수 권장)
-            secret = current_app.config.get('SECRET_KEY', 'dev_secret_key')
-            data = jwt.decode(token, secret, algorithms=["HS256"])
-            
-            raw_id = data.get('user_id')
-            
-            # 토큰의 user_id가 정수(PK)인지 문자열(로그인ID)인지 불확실하므로
-            # User 테이블에서 정확한 PK를 조회하여 사용 (안전장치)
-            # 만약 raw_id가 정수형 문자열('1')이면 | 연산자에서 둘 다 매칭될 수 있으나,
-            # user_id(String)가 unique하므로 안전. 우선순위는 PK > user_id 로 잡거나 OR 검색.
-            # 여기서는 편의상 OR 검색 사용. (정확성을 위해선 토큰 생성 로직을 확인해야 하나, 현재로선 최선)
-            user = User.query.filter((User.id == raw_id) | (User.user_id == raw_id)).first()
-            
-            if not user:
-                 return jsonify({'message': 'User not found'}), 404
-                 
-            current_user_id = user.id
-            
-        except Exception as e:
-            return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
-        return f(current_user_id, *args, **kwargs)
-    return decorated
-
 @bp.route('/', methods=['GET'])
-@token_required
+@jwt_required()
 def get_wishlist(current_user_id):
     """
     로그인한 사용자의 찜 목록을 조회하여 Product 정보를 반환
@@ -58,7 +25,7 @@ def get_wishlist(current_user_id):
     return jsonify(results), 200
 
 @bp.route('/add', methods=['POST'])
-@token_required
+@jwt_required()
 def add_wishlist(current_user_id):
     """
     찜 목록에 상품 추가
@@ -80,7 +47,7 @@ def add_wishlist(current_user_id):
     return jsonify({'message': 'Added to wishlist'}), 201
 
 @bp.route('/remove', methods=['POST'])
-@token_required
+@jwt_required()
 def remove_wishlist(current_user_id):
     """
     찜 목록에서 상품 제거
