@@ -21,7 +21,7 @@ export default function Login() {
       const data = await login({ user_id: userId, password: pw });
 
       // ✅ 2) 백이 준 토큰 저장 (프론트는 생성 X, 저장 O)
-      localStorage.setItem("accessToken", data.access_token);
+      // localStorage.setItem("accessToken", data.access_token);
 
       // (선택) 자동로그인이면 나중에 refresh/cookie 설계로 가는 게 정석
       // 지금은 accessToken만 저장해도 동작은 함

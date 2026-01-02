@@ -1,8 +1,9 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 
 from petShop.models import Cart, Product,db
+from flask import request
 
 cart_bp = Blueprint("cart", __name__, url_prefix="/api/cart")
 
@@ -10,6 +11,7 @@ cart_bp = Blueprint("cart", __name__, url_prefix="/api/cart")
 @cart_bp.route("", methods=["GET"])
 @jwt_required()
 def get_cart():
+    print("AUTH HEADER IN CART:", request.headers.get("Authorization"))
     current_user_id = get_jwt_identity()
 
     carts = Cart.query.filter_by(user_id=current_user_id).all()
