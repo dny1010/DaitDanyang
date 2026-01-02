@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./EditProfile.module.css";
-import { getMyProfile, updateMyProfile, changePassword } from "../../../api/memberApi";
+import { getMyProfile, updateMyProfile, changePassword } from "../../../api/memberApi"; // 정보변경에 미리값이 입력되는거 여기서 가져옴
 
 export default function EditProfile() {
   const [loading, setLoading] = useState(true);
@@ -207,7 +207,7 @@ export default function EditProfile() {
             />
           </div>
 
-          <div className={styles.actions}>
+          <div className={styles.actions2}>
             <button type="submit" className={styles.saveBtn}>
               비밀번호 변경
             </button>
