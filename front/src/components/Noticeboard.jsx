@@ -1,201 +1,174 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./Noticeboard.module.css";
+import { Pagination, Spinner, Alert } from "react-bootstrap";
 
-const STORAGE_KEY = "notice_posts";
+import styles from "./Noticeboard.module.css";
+import { fetchBoard } from "../api/boardApi";
+
 const ITEMS_PER_PAGE = 10;
-const PAGE_RANGE = 5;
 
 export default function Noticeboard() {
   const navigate = useNavigate();
+
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
 
-  // 🔥 조회 기간 상태
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  // ✅ 백에서 받는 값들
+  const [totalPages, setTotalPages] = useState(1);
+  const [startPage, setStartPage] = useState(1);
+  const [endPage, setEndPage] = useState(1);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    setList(data);
-  }, []);
+    let alive = true;
 
-  /** 🔥 기간 필터 */
-  const filteredList = list.filter((post) => {
-    if (!startDate && !endDate) return true;
-    const d = new Date(post.date);
-    if (startDate && d < new Date(startDate)) return false;
-    if (endDate && d > new Date(endDate)) return false;
-    return true;
-  });
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
 
-  const totalPage = Math.ceil(filteredList.length / ITEMS_PER_PAGE);
+    async function load() {
+      setLoading(true);
+      setError("");
 
-  const startIndex = (page - 1) * ITEMS_PER_PAGE;
-  const currentList = filteredList.slice(
-    startIndex,
-    startIndex + ITEMS_PER_PAGE
-  );
+      try {
+        const res = await fetchBoard(page, ITEMS_PER_PAGE);
+        if (!alive) return;
 
-  const startPage =
-    Math.floor((page - 1) / PAGE_RANGE) * PAGE_RANGE + 1;
-  const endPage = Math.min(startPage + PAGE_RANGE - 1, totalPage);
+        console.log("board res.data =", res.data);
 
-  /** 🔥 기간 버튼 핸들러 */
-  const setPeriod = (days) => {
-    const today = new Date();
-    const past = new Date();
-    past.setDate(today.getDate() - days);
+        const items = res.data?.items;
+        setList(Array.isArray(items) ? items : []);
 
-    setStartDate(past.toISOString().slice(0, 10));
-    setEndDate(today.toISOString().slice(0, 10));
-    setPage(1);
-  };
+        const tp = Number(res.data?.total_pages) || 1;
+        setTotalPages(tp);
 
-  const pageBtnStyle = (active) => ({
-    minWidth: "34px",
-    height: "34px",
-    margin: "0 4px",
-    borderRadius: "50%",
-    border: "1px solid #ccc",
-    backgroundColor: active ? "#9bbce6" : "#fff",
-    color: active ? "#fff" : "#333",
-    cursor: "pointer",
-    fontWeight: active ? "bold" : "normal",
-  });
+        // 백이 주면 그대로 쓰고, 없으면 기본값으로라도 세팅
+        setStartPage(Number(res.data?.start_page) || 1);
+        setEndPage(Number(res.data?.end_page) || tp);
 
-  const navBtnStyle = {
-    minWidth: "34px",
-    height: "34px",
-    margin: "0 4px",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    backgroundColor: "#f5f5f5",
-    cursor: "pointer",
-  };
+        // page가 범위 넘어가면 보정
+        if (page > tp) setPage(1);
+      } catch (err) {
+        if (!alive) return;
+
+        console.log("board error:", err);
+        console.log("status:", err.response?.status);
+        console.log("data:", err.response?.data);
+
+        if (err.response?.status === 401) {
+          alert("로그인이 만료되었습니다.");
+          navigate("/login");
+        } else {
+          setError("게시판 데이터를 불러오는 중 오류가 발생했습니다.");
+        }
+
+        setList([]);
+        setTotalPages(1);
+        setStartPage(1);
+        setEndPage(1);
+      } finally {
+        if (alive) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      alive = false;
+    };
+  }, [navigate, page]);
 
   return (
     <div className={styles.page}>
       <div className={styles.noticeBoard}>
-
-        {/* 🔥 조회 기간 */}
-        <div className={styles.filterArea}>
-          <strong>조회 기간 :</strong>
-          <span onClick={() => setPeriod(0)}>오늘</span> /
-          <span onClick={() => setPeriod(7)}>일주일</span> /
-          <span onClick={() => setPeriod(30)}>한달</span> /
-          <span onClick={() => setPeriod(90)}>3개월</span>
-          &nbsp;
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => {
-              setStartDate(e.target.value);
-              setPage(1);
-            }}
-          />
-          ~
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => {
-              setEndDate(e.target.value);
-              setPage(1);
-            }}
-          />
-        </div>
-
-        {/* 제목 + 글쓰기 */}
         <div className={styles.titleArea}>
           <h2 className={styles.title}>게시판</h2>
-          <button
-            className={styles.writeButton}
-            onClick={() => navigate("/write")}
-          >
+          <button className={styles.writeButton} onClick={() => navigate("/write")}>
             글쓰기
           </button>
         </div>
 
-        {/* 테이블 */}
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>조회수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentList.map((item, index) => (
-                <tr
-                  key={item.id}
-                  onClick={() =>
-                    navigate(`/Noticeboard/${item.id}`)
-                  }
-                  style={{ cursor: "pointer" }}
-                >
-                  <td>{startIndex + index + 1}</td>
-                  <td>{item.title}</td>
-                  <td>{item.writer}</td>
-                  <td>{item.date}</td>
-                  <td>{item.view}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {loading && (
+          <div className="d-flex justify-content-center my-4">
+            <Spinner animation="border" />
+          </div>
+        )}
 
-        {/* ✅ 기존 페이지네이션 그대로 */}
-        <div className={styles.pagination}>
-          <button
-            style={navBtnStyle}
-            disabled={page === 1}
-            onClick={() => setPage(1)}
-          >
-            «
-          </button>
+        {!loading && error && (
+          <Alert variant="danger" className="my-3">
+            {error}
+          </Alert>
+        )}
 
-          <button
-            style={navBtnStyle}
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-          >
-            ‹
-          </button>
+        {!loading && !error && (
+          <>
+            <div className={styles.tableWrap}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {list.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} style={{ textAlign: "center", padding: 16 }}>
+                        데이터가 없습니다.
+                      </td>
+                    </tr>
+                  ) : (
+                    list.map((item) => (
+                      <tr
+                        key={item.id}
+                        onClick={() => navigate(`/Noticeboard/${item.id}`)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <td>{item.id}</td>
+                        <td>{item.title}</td>
+                        <td>{item.writer}</td>
+                        <td>{item.date}</td>
+                        <td>{item.view}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
 
-          {Array.from(
-            { length: endPage - startPage + 1 },
-            (_, i) => startPage + i
-          ).map((p) => (
-            <button
-              key={p}
-              style={pageBtnStyle(page === p)}
-              onClick={() => setPage(p)}
-            >
-              {p}
-            </button>
-          ))}
+            {/* ✅ 백에서 준 total_pages 기준으로만 렌더 */}
+            {totalPages > 0 && (
+              <div className={styles.pagination}>
+                <Pagination className={styles.category_pagination ?? ""}>
+                  <Pagination.First onClick={() => setPage(1)} disabled={page === 1} />
+                  <Pagination.Prev
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                    disabled={page === 1}
+                  />
 
-          <button
-            style={navBtnStyle}
-            disabled={page === totalPage}
-            onClick={() => setPage(page + 1)}
-          >
-            ›
-          </button>
+                  {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((n) => (
+                    <Pagination.Item key={n} active={n === page} onClick={() => setPage(n)}>
+                      {n}
+                    </Pagination.Item>
+                  ))}
 
-          <button
-            style={navBtnStyle}
-            disabled={page === totalPage}
-            onClick={() => setPage(totalPage)}
-          >
-            »
-          </button>
-        </div>
-
+                  <Pagination.Next
+                    onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={page === totalPages}
+                  />
+                  <Pagination.Last onClick={() => setPage(totalPages)} disabled={page === totalPages} />
+                </Pagination>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

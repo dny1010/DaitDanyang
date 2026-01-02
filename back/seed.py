@@ -77,6 +77,106 @@ with app.app_context():
             content="출고 마감 시간이 오후 5시로 변경되었습니다.",
             created_date=datetime(2025, 11, 14),
         ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+        Question(
+            title="택배 출고 마감시간 변경 안내",
+            category="공지사항",
+            user_id=admin.id,
+            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            created_date=datetime(2025, 11, 14),
+        ),
+
+
+
+
     ]
 
     db.session.add_all(question1)

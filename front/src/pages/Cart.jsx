@@ -6,7 +6,7 @@ export default function Cart() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  console.log("Cart component mounted");
   // 서버(cart item) -> 화면(item) 변환
   const mapServerToUI = (rows) =>
     (rows || []).map((c) => ({
@@ -28,11 +28,18 @@ export default function Cart() {
       const data = await fetchMyCart();   // GET /api/cart
       setItems(mapServerToUI(data));
     } catch (err) {
+      console.log("ERR RAW:", err);
+      console.log("ERR STATUS:", err?.response?.status);
+      console.log("ERR DATA:", err?.response?.data);
+
       const msg =
-        err?.response?.status === 401
-          ? "로그인이 필요합니다. (토큰이 없거나 만료됨)"
-          : err?.response?.data?.message || "장바구니 불러오기 실패";
+        err?.response?.data?.msg ||              // ✅ Flask-JWT-Extended
+        err?.response?.data?.message ||          // (혹시 message로 주는 API)
+        err?.message ||                          // ✅ axios 기본 메시지: Request failed...
+        "장바구니 불러오기 실패";
+
       setError(msg);
+      alert(msg);
       setItems([]);
     } finally {
       setLoading(false);
@@ -138,9 +145,7 @@ export default function Cart() {
     <div className={styles.cartWrap}>
       <h2 className={styles.cartTitle}>CART</h2>
 
-      <button onClick={addTestItem} className={styles.testBtn}>
-        🧪 테스트 상품 장바구니 담기(서버)
-      </button>
+
 
       {loading && <div className={styles.empty}>불러오는 중...</div>}
       {error && <div className="text-danger small mb-2">{error}</div>}

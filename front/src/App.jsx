@@ -77,10 +77,10 @@ export default function App() {
           <Route path="/events" element={<EventPage />} /> {/* Navbar의 /events와 매핑 */}
           <Route path="/support" element={<CustomerCenterPage />} /> {/* Navbar의 /support와 매핑 */}
           <Route path="/Noticeboard" element={<Noticeboard />} />
-           <Route path="/Noticeboard/:id" element={<NoticeDetail />} />
+          <Route path="/Noticeboard/:id" element={<NoticeDetail />} />
           <Route path="/Noticeboard/edit/:id" element={<EditPost />} /> 
           <Route path="/order" element={<Order />} />
-          <Route path="/view" element={<Recent />} />
+          {/* <Route path="/view" element={<Recent />} /> */}
 
           {/* ✅ 마이페이지 */}
           <Route path="mypage" element={<MyPageLayout />}>
