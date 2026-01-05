@@ -179,6 +179,14 @@ with app.app_context():
 
     ]
 
+    # review1[
+    #     review(
+    #         user_id= "dami",
+    #         content = ""
+    #
+    #     )
+    # ]
+
     db.session.add_all(question1)
     print("📢 공지사항 생성 완료")
 

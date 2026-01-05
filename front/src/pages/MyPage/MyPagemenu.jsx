@@ -30,7 +30,7 @@ export default function MyPagemenu() {
 
       <div style={{ marginBottom: "16px" }}>
         <div style={{ fontWeight: 700, marginBottom: "8px" ,fontSize:"20px"}}>활동</div>
-        <NavLink to="qna" style={linkStyle}>나의 상품문의</NavLink>
+        <NavLink to="qna" style={linkStyle}>나의 문의내역</NavLink>
         <NavLink to="review" style={linkStyle}>나의 상품후기</NavLink>
       </div>
     </div>

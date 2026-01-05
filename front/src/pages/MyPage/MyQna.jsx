@@ -1,18 +1,38 @@
 // src/pages/MyQna.jsx
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./MyQna.module.css";
-import { myQna } from "../../data/myQna";
+import { getMyQna } from "../../api/myQnaApi";
+
 
 export default function MyQna() {
   const [filter, setFilter] = useState("전체"); // 전체/답변대기/답변완료
   const [open, setOpen] = useState(null); // 선택한 문의(id)
+  const [myQna, setMyQna] = useState([]);     // ✅ 서버에서 받은 문의내역 저장
+  const [loading, setLoading] = useState(true); // ✅ 로딩 표시용
+
+
+  useEffect(() => {
+    const fetchMyQna = async () => {
+      try {
+        const data = await getMyQna();
+        setMyQna(data);
+      } catch (err) {
+        console.error("문의내역 불러오기 실패", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMyQna();
+  }, []);
 
   const list = useMemo(() => {
     if (filter === "전체") return myQna;
     return myQna.filter((q) => q.status === filter);
-  }, [filter]);
+  }, [filter, myQna]);
 
   const selected = open ? myQna.find((q) => q.id === open) : null;
+
 
   return (
     <div className={styles.wrap}>
@@ -35,6 +55,8 @@ export default function MyQna() {
       </div>
 
       {/* 목록 */}
+      {loading && <div className={styles.empty}>불러오는 중...</div>}
+
       <div className={styles.list}>
         {list.map((q) => (
           <button
