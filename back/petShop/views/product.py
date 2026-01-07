@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify
-from petShop.models import Product
-
+from petShop.models import Product, Review
 
 product_bp = Blueprint('product', __name__, url_prefix='/api/product')
 
@@ -71,4 +70,8 @@ def list_products():
 @product_bp.get("/<int:product_id>")
 def product_detail(product_id):
     p = Product.query.get_or_404(product_id)
-    return jsonify(p.to_dict())
+    review_count = Review.query.filter_by(product_id=product_id).count()
+
+    data = p.to_dict()
+    data['review_count'] = review_count
+    return jsonify(data)

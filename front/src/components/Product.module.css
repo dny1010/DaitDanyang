@@ -203,3 +203,19 @@
 .review_pagination :global(.page-item.disabled) {
   display: none;
 }
+
+.meta {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  color: #888;
+}
+
+.writer {
+  font-weight: 500;
+  color: #333;
+}
+
+.date {
+  color: #aaa;
+}

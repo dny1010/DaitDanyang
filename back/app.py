@@ -25,9 +25,11 @@ def create_app():
     # =========================
 
     UPLOAD_ROOT = os.path.join("static", "uploads")
-    os.makedirs(UPLOAD_ROOT, exist_ok=True)
+    REVIEW_DIR = os.path.join(UPLOAD_ROOT, "review")
+    os.makedirs(REVIEW_DIR, exist_ok=True)
 
     app.config["UPLOAD_ROOT"] =UPLOAD_ROOT
+    app.config["UPLOAD_FOLDER_REVIEW"]=REVIEW_DIR
     app.config["MAX_CONTENT_LENGTH"] = 5*1024*1024
 
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev_secret_key")

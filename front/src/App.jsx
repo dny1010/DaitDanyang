@@ -27,9 +27,9 @@ import EditProfile from "./pages/MyPage/member/EditProfile";
 import Withdraw from "./pages/MyPage/member/Withdraw";
 
 // 기타
-// import MyQna from "./pages/MyPage/MyQna";
+import MyQna from "./pages/MyPage/MyQna";
 import MyReview from "./pages/MyPage/MyReview";
-// import Recent from "./components/Recent";
+import Recent from "./components/Recent";
 
 import Footer from './components/Footer'; 
 import MainPage from "./pages/MainPage"; 
@@ -81,8 +81,10 @@ export default function App() {
           <Route path="/Noticeboard/:id" element={<NoticeDetail />} />
           <Route path="/Noticeboard/edit/:id" element={<EditPost />} /> 
           <Route path="/order" element={<Order />} />
+
           <Route path="/AdminPostForm" element={<AdminPostForm />} />
           {/* <Route path="/view" element={<Recent />} /> */}
+
 
           {/* ✅ 마이페이지 */}
           <Route path="mypage" element={<MyPageLayout />}>
@@ -90,14 +92,13 @@ export default function App() {
 
             <Route path="shopping/orders" element={<OrderList />} />
             <Route path="shopping/returns" element={<ReturnCancel />} />
-            {/* <Route path="shopping/wishlist" element={<WishList />} /> */}
 
             <Route path="shopping/wishlist" element={<WishlistPage />} /> {/* 찜목록 (마이페이지) */}
 
             <Route path="member/edit" element={<EditProfile />} />
             <Route path="member/withdraw" element={<Withdraw />} />
 
-            {/* <Route path="qna" element={<MyQna />} /> */}
+            <Route path="qna" element={<MyQna />} />
             <Route path="review" element={<MyReview />} />
           </Route>
 
@@ -111,12 +112,3 @@ export default function App() {
     </div>
   );
 }
-
-
-
-
-// ==============================================================================
-// [Gemini 작업 로그] - 2025.12.26
-// 1. 라우팅 추가: /wishlist (찜목록/마이페이지) 경로 등록 및 컴포넌트 임포트.
-// 2. 레이아웃 유지: MainLayout 내부에 배치하여 Navbar/Footer 공통 적용.
-// ==============================================================================
