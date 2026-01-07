@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./PostForm.module.css";
 
-import { createPost, fetchMe } from "../api/postApi";
+import { createPost } from "../api/postApi";
+import { fetchMe } from "../api/authApi";
 
 export default function PostForm() {
   const navigate = useNavigate();
