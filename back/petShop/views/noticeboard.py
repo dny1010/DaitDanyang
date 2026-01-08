@@ -41,14 +41,14 @@ def board_list():
     # =========================
     if user_id is None:
         # 비회원이면 공지만
-        q = q.filter(Question.board_type == "NOTICE")
+        q = q.filter(Question.category == "공지")
     else:
         # 로그인한 경우 role 확인
         user = User.query.get(user_id)
 
         # 토큰은 있는데 유저가 없으면(비정상) -> 공지만 보여주기(안전)
         if not user:
-            q = q.filter(Question.board_type == "NOTICE")
+            q = q.filter(Question.category == "공지")
         else:
             if user.role == "admin":
                 # ADMIN이면 전체 (필터 없음)
@@ -56,7 +56,7 @@ def board_list():
             else:
                 # 일반 유저면 공지 + 본인글
                 q = q.filter(
-                    (Question.board_type == "NOTICE") | (Question.user_id == user_id)
+                    (Question.category == "공지") | (Question.user_id == user_id)
                 )
 
     # 정렬은 필터 후 적용

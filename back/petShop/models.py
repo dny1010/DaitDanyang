@@ -151,6 +151,26 @@ class Question(db.Model):
 
     img_url = db.Column(db.String(255), nullable=True)
 
+    # ✅ 이벤트용 기간 필드 (통합)
+    start_date = db.Column(db.String(50), nullable=True)
+    end_date = db.Column(db.String(50), nullable=True)
+
+    def to_dict(self):
+        # ✅ 이벤트인 경우 기간을, 일반 게시글인 경우 생성일을 'date' 키로 반환
+        display_date = f"{self.start_date} ~ {self.end_date}" if self.start_date else self.created_date.strftime(
+            "%Y-%m-%d")
+
+        return {
+            "id": self.id,
+            "title": self.title,
+            "content": self.content,
+            "category": self.category,
+            "writer": self.user.nickname if self.user else "알수없음",
+            "date": display_date,  # ✅ 프론트엔드 호환성 유지
+            "img_url": self.img_url,
+            "start_date": self.start_date,
+            "end_date": self.end_date
+        }
 
 class Answer(db.Model):
     """

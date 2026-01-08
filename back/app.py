@@ -15,6 +15,8 @@ from petShop.views.wishlist import bp as wishlist_bp
 from petShop.views.noticeboard import board_bp
 from petShop.views.auth import bp as auth_bp
 from petShop.views.newpost import post_bp
+from petShop.views.event import event_bp
+from petShop.views.chat import chat_bp
 
 migrate = Migrate()
 
@@ -74,12 +76,6 @@ def create_app():
     def index():
         return "Petshop API OK"
 
-    @app.post("/api/chat")
-    def chat():
-        data = request.get_json(silent=True) or {}
-        message = data.get("message", "")
-        return jsonify({"reply": f"너가 보낸: {message}"})
-
     # =========================
     # 6. 블루프린트 등록
     # =========================
@@ -90,6 +86,8 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(board_bp)
     app.register_blueprint(post_bp)
+    app.register_blueprint(event_bp)
+    app.register_blueprint(chat_bp)
     app.register_blueprint(order_bp)
     return app
 
