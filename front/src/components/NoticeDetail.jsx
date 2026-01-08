@@ -2,33 +2,33 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./NoticeDetail.module.css";
 
-import client from "../api/client"; // ✅ 누락된 client import 추가
-import { updatePost , deletePost } from "../api/postApi"
+import client from "../api/client";
+import { readPost, updatePost, deletePost } from "../api/postApi";
 
 export default function NoticeDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  
-  // ✅ 답변 작성 상태
+
   const [answerContent, setAnswerContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function loadPost() {
       try {
-        const data = await updatePost(id);
-        setPost(data);
+        const data = await readPost(id);   // ✅ 여기!
+        setPost(data.item ?? data);        // 백이 item으로 주면 item, 아니면 그대로
       } catch (err) {
         console.error("상세 조회 실패:", err);
-        // ✅ 권한 없음(403) 처리
-        if (err.response && err.response.status === 403) {
+        if (err.response?.status === 403) {
           alert("비공개 게시글입니다. 작성자만 확인할 수 있습니다.");
+        } else if (err.response?.status === 401) {
+          alert("로그인이 필요합니다.");
         } else {
           alert("게시글을 불러오는 중 오류가 발생했습니다.");
         }
-        navigate("/Noticeboard"); // 목록으로 복귀
+        navigate("/support");
       } finally {
         setLoading(false);
       }
@@ -62,8 +62,8 @@ export default function NoticeDetail() {
       alert("답변이 등록되었다냥! ✨");
       setAnswerContent("");
       // 데이터 새로고침
-      const data = await updatePost(id);
-      setPost(data);
+      const data = await readPost(id);
+      setPost(data.item ?? data);
     } catch (err) {
       alert("답변 등록 실패: " + (err.response?.data?.msg || err.message));
     } finally {
@@ -153,7 +153,7 @@ export default function NoticeDetail() {
           )}
 
           {/* 목록으로 이동 (메인 액션) */}
-          <button className={styles.listBtn} onClick={() => navigate("/support")}>
+          <button className={styles.listBtn} onClick={() => navigate("prev")}>
             목록으로
           </button> 
         </div>
