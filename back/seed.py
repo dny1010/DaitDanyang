@@ -5,7 +5,7 @@ from datetime import datetime
 import random
 
 from app import create_app
-from petShop.models import db, Product, Question, User
+from petShop.models import db, Product, Question, User, Review
 
 # ✅ crawlers/data 경로
 BASE_DATA_DIR = os.path.join(
@@ -180,15 +180,18 @@ with app.app_context():
 
     ]
 
-    # review1[
-    #     review(
-    #         user_id= "dami",
-    #         content = ""
-    #
-    #     )
-    # ]
+    review1 = [
+        Review(
+            user_id= admin.id,
+            product_id = 580,
+            content = "너무 좋아요",
+            img_url = "https://shopping-phinf.pstatic.net/main_5294012/52940129003.1.jpg",
+            rating = 5,
+            create_date=datetime(2026,1,7)
+        )
+    ]
 
-    db.session.add_all(question1)
+    db.session.add_all(question1+review1)
     print("📢 공지사항 생성 완료")
 
     # =========================================================

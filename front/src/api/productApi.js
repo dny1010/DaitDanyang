@@ -10,6 +10,11 @@ export async function fetchProductDetail(productId) {
   return res.data;
 }
 
+export async function fetchMainReviews() {
+  const res = await client.get("/api/reviews/main");
+  return res.data;
+}
+
 export async function fetchReviews(productId, page, sort) {
   const res = await client.get(
     `/api/product/${productId}/reviews`,
