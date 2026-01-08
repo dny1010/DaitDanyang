@@ -83,7 +83,7 @@ export default function App() {
           <Route path="/order" element={<Order />} />
 
           <Route path="/AdminPostForm" element={<AdminPostForm />} />
-          {/* <Route path="/view" element={<Recent />} /> */}
+          <Route path="/view" element={<Recent />} />
 
 
           {/* ✅ 마이페이지 */}

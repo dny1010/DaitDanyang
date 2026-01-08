@@ -111,3 +111,18 @@ def board_list():
         "has_prev": page > 1,
         "has_next": page < total_pages,
     }), 200
+
+@board_bp.get("/notices")
+def list_notices():
+    q = ((Question.query
+         .filter(Question.category == "공지사항"))
+         .order_by(Question.created_date.desc()))
+
+    items = q.limit(3).all()
+
+    return jsonify({
+        "items": [
+            {"id":n.id, "title": n.title, "date": n.created_date.strftime("%Y-%m-%d")}
+            for n in items
+        ]
+    })

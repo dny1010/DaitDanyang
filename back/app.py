@@ -8,6 +8,7 @@ from petShop.models import db
 from petShop.extensions import jwt
 
 from petShop.views.cart import cart_bp
+from petShop.views.order import order_bp
 from petShop.views.product import product_bp
 from petShop.views.review import review_bp
 from petShop.views.wishlist import bp as wishlist_bp
@@ -87,7 +88,7 @@ def create_app():
     app.register_blueprint(post_bp)
     app.register_blueprint(event_bp)
     app.register_blueprint(chat_bp)
-
+    app.register_blueprint(order_bp)
     return app
 
 

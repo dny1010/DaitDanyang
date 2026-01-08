@@ -7,3 +7,8 @@ export function fetchBoard(page = 1, perPage = 10) {
     params: { page, per_page: perPage },
   });
 }
+
+export async function fetchNotice() {
+  const res = await client.get("/api/board/notices");
+  return res.data;
+}

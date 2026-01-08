@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
 
-from petShop.models import Product, Review, db
+from petShop.models import Review, db
 
 review_bp = Blueprint('review', __name__, url_prefix='/api')
 
@@ -152,8 +152,6 @@ def delete_review(review_id):
     if r.user_id != user_id:
         return jsonify({"message": "권한이 없습니다."}), 403
 
-    product_id = r.product_id
-
     # 파일 삭제
     delete_image(r.img_url)
 
@@ -161,3 +159,17 @@ def delete_review(review_id):
     db.session.delete(r)
     db.session.commit()
     return jsonify({"message": "삭제 완료"})
+
+@review_bp.get('/reviews/main')
+def list_main_reviews():
+    q = ((Review.query
+          .filter(Review.img_url.isnot(None)))
+          .order_by(Review.rating.desc(), Review.create_date.desc()))
+
+    reviews = q.limit(3).all()
+
+    return jsonify({
+        "reviews": [{
+            "id": r.id, "content": r.content, "date": r.create_date.strftime("%Y-%m-%d")}
+            for r in reviews]
+    })
