@@ -170,6 +170,10 @@ def list_main_reviews():
 
     return jsonify({
         "reviews": [{
-            "id": r.id, "content": r.content, "date": r.create_date.strftime("%Y-%m-%d")}
+            "id": r.id,
+            "user_id": r.user_id,
+            "content": r.content,
+            "rating": r.rating,
+            "date": r.create_date.strftime("%Y-%m-%d")}
             for r in reviews]
     })

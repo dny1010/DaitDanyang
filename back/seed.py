@@ -193,9 +193,25 @@ with app.app_context():
             user_id= admin.id,
             product_id = 580,
             content = "너무 좋아요",
-            img_url = "https://shopping-phinf.pstatic.net/main_5294012/52940129003.1.jpg",
+            img_url = "KakaoTalk_20251216_111630581.jpg",
             rating = 5,
             create_date=datetime(2026,1,7)
+        ),
+        Review(
+            user_id=admin.id,
+            product_id=580,
+            content="가격이 너무 비싸요",
+            img_url="1.jpg",
+            rating=3,
+            create_date=datetime(2026, 1, 10)
+        ),
+        Review(
+            user_id=admin.id,
+            product_id=582,
+            content="외관은 이쁜데 그냥저냥 그래요",
+            img_url="5.jpg",
+            rating=4,
+            create_date=datetime(2026, 1, 7)
         )
     ]
 

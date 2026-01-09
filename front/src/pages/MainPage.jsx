@@ -73,12 +73,13 @@ function MainPage() {
     };
   }, [pet]);
 
+
   useEffect(() => {
     (async () => {
       try {
         const data = await fetchMainReviews();
         setReviews(Array.isArray(data.reviews) ? data.reviews : []);
-      } catch(e) {
+      } catch (e) {
         console.error("리뷰 불러오기 에러", e);
       }
     })();
@@ -98,13 +99,6 @@ function MainPage() {
 
   return (
     <Container className={styles.container}>
-      {/* 로딩 중 표시 */}
-      {loading && (
-        <div className="d-flex justify-content-center my-4">
-          <Spinner animation="border" />
-        </div>
-      )}
-
       {/* 에러 표시 */}
       {!loading && error && (
         <Alert variant="danger" className="my-3">
@@ -113,8 +107,14 @@ function MainPage() {
       )}
 
       {/* 정상 렌더 */}
-      {!loading && !error && (
-        <div className={styles.main}>
+      <div className={styles.main}>
+
+        {/* 로딩 중 표시 */}
+        {loading && (
+          <div className="d-flex justify-content-center my-4">
+            <Spinner animation="border" />
+          </div>
+        )}
           <div>
             {/* 상단 슬라이더 */}
             <section className={styles.slider}>
@@ -207,14 +207,34 @@ function MainPage() {
 
             <div className={styles.revnot}>
               <div className={styles.review}>
-                revi
+                {reviews.map((r) => (
+                  <div key={r.id} className={styles.card}>
+                    <div className={styles.thumb}>
+                      <img
+                        src={getImageSrc(r)} alt="리뷰이미지" className={styles.revimg} />
+                    </div>
+
+                    <div className={styles.meta}>
+                      <div className={styles.stars}>
+                        {"⭐".repeat(r.rating)}
+                        {"☆".repeat(5 - r.rating)}
+                      </div>
+                      <div className={styles.write}>
+                        <p className={styles.title}>{r.writer || "작성자"}</p>
+                        <p className={styles.date}>{r.date}</p>
+                      </div>
+                      <div className={styles.content}>{r.content}</div>
+                    </div>
+                  </div>
+                ))}
               </div>
+
               <div className={styles.notice}>
                 <h4 className={styles.noticeTitle}>공지사항</h4>
                 <div className={styles.noticeList}>
                   {notices.map((n) => (
                     <div key={n.id} className={styles.notItem}>
-                      <span className={styles.notTitle}>{n.title}</span>
+                      <span className={styles.notTitle} onClick={() => navigate(`/NoticeDetail/${n.id}`)}>{n.title}</span>
                       <span className={styles.notDate}>{n.date}</span>
                     </div>
                   ))}
@@ -222,9 +242,8 @@ function MainPage() {
               </div>
             </div>
           </div>
-        </div>
-      )}
-    </Container>
+      </div>
+    </Container >
   )
 };
 
