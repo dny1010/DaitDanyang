@@ -3,7 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Withdraw.module.css";
 // ✅ 나중에 API 붙일 때 여기만 연결하면 됨
-// import api from "../../api/api";
+import { withdraw } from "../../../api/authApi";
+
 
 export default function Withdraw() {
   const navigate = useNavigate();
@@ -37,17 +38,22 @@ export default function Withdraw() {
     // ✅ 지금은 DB 연결 전이라 '탈퇴 완료'처럼 동작만 해보기
     // 나중에 API 연결하면 아래 부분만 바꾸면 됨.
     try {
-      // ✅ (나중에) 서버 요청 예시
-      // await api.post("/users/withdraw", {
-      //   password,
-      //   reason: reason === "etc" ? reasonEtc : reason,
-      // });
+      await withdraw({
+        password,
+        reason,
+        reasonEtc,
+      });
 
-      alert("회원탈퇴가 처리되었다고 가정할게. (지금은 화면만)");
-      // 탈퇴 후 보통 로그인/홈으로 이동
+      // ✅ 탈퇴 성공 → 토큰 제거
+      localStorage.removeItem("accessToken");
+
+      alert("회원탈퇴가 완료됐어.");
       navigate("/login");
     } catch (e) {
-      setErr("탈퇴 처리 중 오류가 발생했어. 잠시 후 다시 시도해줘.");
+      const msg =
+        e?.normalized?.message ||
+        "탈퇴 처리 중 오류가 발생했어.";
+      setErr(msg);
     }
   };
 

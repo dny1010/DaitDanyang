@@ -11,7 +11,7 @@ export default function PostForm() {
   const navigate = useNavigate();
 
   // 게시판 타입
-  const [boardType, setBoardType] = useState("FREE");
+  const [boardType, setBoardType] = useState("문의사항");
 
   const [title, setTitle] = useState("");
 
@@ -94,9 +94,9 @@ export default function PostForm() {
             onChange={(e) => setBoardType(e.target.value)}
           >
 
-            <option value="FREE">자유</option>
-            <option value="QNA">Q&A</option>
-            <option value="NOTICE">공지 (관리자)</option>
+            <option value="문의사항">문의사항</option>
+            <option value="건의사항">건의사항</option>
+            <option value="기타">기타</option>
           </select>
         </div>
 

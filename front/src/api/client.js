@@ -32,6 +32,7 @@ client.interceptors.request.use(
     const token = localStorage.getItem("accessToken");
 
     if (token) {
+      config.headers = config.headers ?? {};  
       // Bearer 방식: "이 토큰은 Bearer 인증 방식이다"라는 관례적인 표현
       config.headers.Authorization = `Bearer ${token}`;
     }

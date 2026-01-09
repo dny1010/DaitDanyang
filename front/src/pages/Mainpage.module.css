@@ -103,11 +103,11 @@
 
 .best {
     margin-top: 40px;
-    
+
 }
 
 .best h3 {
-  margin-bottom: 32px;
+    margin-bottom: 32px;
 }
 
 .bestitems {
@@ -121,7 +121,7 @@
 .productCard {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     cursor: pointer;
 }
 
@@ -134,33 +134,108 @@
 }
 
 .productTitle {
-  margin: 12px 0 4px;
-  font-size: 14px;
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  min-height: calc(1.3em * 1);
-  text-align: center;
+    margin: 12px 0 4px;
+    font-size: 14px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    min-height: calc(1.3em * 1);
+    text-align: center;
 }
 
 .productPrice {
-  font-weight: 600;
-  text-align: center;
+    font-weight: 600;
+    text-align: center;
 }
 
 .revnot {
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
+    border-radius: 20px;
 }
 
 .review {
     width: 700px;
     height: 250px;
-    border: solid 1px #222;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-radius: 20px;
+    background-color: #e8eef8;
 }
+
+.card {
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.thumb {
+    width: 150px;
+    aspect-ratio: 1 / 1;
+    /* 정사각형 박스 */
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.revimg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.meta {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stars {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.write {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.title {
+    font-size: 14px;
+}
+
+.date {
+    font-size: 12px;
+    color: #aaa;
+}
+
+.content {
+    font-size: 13px;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* 반응형 */
+@media (max-width: 900px) {
+    .review {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .review {
+        grid-template-columns: 1fr;
+    }
+}
+
 
 .notice {
     width: 400px;
@@ -184,6 +259,7 @@
 .noticeList {
     display: flex;
     flex-direction: column;
+    padding: 0 12px;
 }
 
 .notItem {
@@ -192,24 +268,25 @@
     align-items: center;
     padding: 15px 12px;
     text-align: left;
-    border-bottom: 1px solid #cfd8e3; 
-} 
+    border-bottom: 1px solid #cfd8e3;
+}
+
 .notItem:last-child {
     border-bottom: none;
 }
 
 .notTitle {
-    flex: 1;              
+    flex: 1;
     min-width: 0;
     margin-right: 16px;
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer;
 }
 
 .notDate {
     flex-shrink: 0;
     font-size: 14px;
 }
-  

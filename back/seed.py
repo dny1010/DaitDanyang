@@ -46,13 +46,21 @@ with app.app_context():
         Question(
             title="[배송공지] 설 연휴 배송 안내",
             category="공지사항",
-            user_id=admin.id,
+            user_id=admin.id,  # ✅ 핵심: NOT NULL 해결
             content=(
                 "안녕하세요, 다잇다냥입니다.\n"
                 "설 연휴 기간 배송 및 고객센터 운영 일정에 대해 안내해 드립니다.\n\n"
                 "1. 배송 안내\n"
-                "▶ 2월 12일 17시 이전 결제 : 당일 출고\n"
-                "▶ 2월 12일 17시 이후 결제 : 2월 19일부터 순차 출고\n\n"
+                "  ▶ 2월 12일 (목) 17시 이전 결제 완료건 : 당일 출고 및 연휴 전 수령 가능\n"
+                "    (일부 지역은 연휴 전 수령이 어려울 수 있습니다)\n"
+                "  ▶ 2월 12일 (목) 17시 이후 결제 완료건 : 2월 19일 (목)부터 순차 출고,\n"
+                "    2월 20일(금)부터 순차 수령 가능\n\n"
+                "＊ 제주도, 도서산간 지역 및 업체배송은 1~3일 가량 일찍 마감됩니다.\n\n"
+                "2. 고객센터 이용 안내\n"
+                "  ▶ 휴무 기간 : 2월 13일(금) ~ 2월 19일(목)까지 휴무\n"
+                "  ▶ 연휴 기간 내 궁금하신 사항은 내 정보 > 1:1 게시판을 이용해 주세요.\n\n"
+                "설 연휴 전후 물량증가로 인해 배송지연이 예상되오니 너그러이 양해 부탁드립니다.\n"
+                "가족과 함께 즐거운 설연휴 보내시기 바랍니다.\n"
                 "감사합니다."
             ),
             created_date=datetime(2026, 1, 14),
@@ -60,128 +68,53 @@ with app.app_context():
         Question(
             title="[배송공지] 연말 연시 배송 안내",
             category="공지사항",
-            user_id=admin.id,
-            content="연말 및 새해 연휴 배송 일정 안내드립니다.",
+            user_id=admin.id,  # ✅ 핵심: NOT NULL 해결
+            content=(
+                "안녕하세요, 다잇다냥입니다.\n"
+                "연말 및 새해 연휴 기간 배송 및 고객센터 운영 일정에 대해 안내해 드립니다.\n\n"
+                "1. 배송 안내\n"
+                "  ▶ 12월 30일 (화) 17시 이전 결제 완료건 : 당일 출고 및 31일 수령 가능\n"
+                "    (일부 지역은 연휴 전 수령이 어려울 수 있습니다)\n"
+                "  ▶ 12월 30일 (목) 17시 이후 결제 완료건 : 1월 2일 (금)부터 순차 출고,\n"
+                "    1월 3일(토)부터 순차 수령 가능\n\n"
+                "＊ 제주도, 도서산간 지역 및 업체배송은 1~3일 가량 일찍 마감됩니다.\n\n"
+                "2. 고객센터 이용 안내\n"
+                "  ▶ 휴무 기간 : 12월 31일(수) ~ 1월 1일(목)까지 휴무\n"
+                "  ▶ 연휴 기간 내 궁금하신 사항은 내 정보 > 1:1 게시판을 이용해 주세요.\n\n"
+                "즐거운 연말 보내시고 새해 복 많이 받으세요.\n"
+                "감사합니다."
+            ),
             created_date=datetime(2025, 12, 16),
         ),
         Question(
             title="[배송공지] 성탄절 배송공지",
             category="공지사항",
-            user_id=admin.id,
-            content="12월 25일 성탄절로 택배 배송이 중단됩니다.",
+            user_id=admin.id,  # ✅ 핵심: NOT NULL 해결
+            content=(
+                "안녕하세요, 다잇다냥입니다.\n"
+                "12월 25일은 성탄절로 인한 공휴일로 택배사에서 배송 업무를 하지 않습니다.\n"
+                "따라서 12월 24일 출고된 상품은 12월 29일부터 순차 수령 가능하오니 주문 시 참고 부탁 드립니다.\n"
+                "그럼 즐거운 성탄절 보내시기 바랍니다.\n"
+                "감사합니다."
+            ),
             created_date=datetime(2025, 12, 5),
         ),
         Question(
             title="택배 출고 마감시간 변경 안내",
             category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
+            user_id=admin.id,  # ✅ 핵심: NOT NULL 해결
+            content=(
+                "안녕하세요, 다잇다냥입니다.\n"
+                "2025년 11월 10일(월) 부터 출고 마감 시간이 변경되어 안내드립니다.\n\n"
+                "- 발송 마감\n"
+                "평일 : 오후 5시 까지 결제 완료 시 당일 출고 (평일 5시 30분 => 평일 5시 변경)\n"
+                "토요일 : 오후 12시 까지 결제 완료 시 당일 출고 (기존 동일)\n\n"
+                "보다 안전하고 정호가한 배송을 위하여 마감 시간을 변경하게 되었사오니 참고 부탁 드립니다.\n"
+                "앞으로도 보다 나은 서비스를 제공할 수 있도록 노력하겠습니다.\n"
+                "감사합니다."
+            ),
             created_date=datetime(2025, 11, 14),
         ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-        ),
-        Question(
-            title="택배 출고 마감시간 변경 안내",
-            category="공지사항",
-            user_id=admin.id,
-            content="출고 마감 시간이 오후 5시로 변경되었습니다.",
-            created_date=datetime(2025, 11, 14),
-
-        )
 
 
 
@@ -193,9 +126,25 @@ with app.app_context():
             user_id= admin.id,
             product_id = 580,
             content = "너무 좋아요",
-            img_url = "https://shopping-phinf.pstatic.net/main_5294012/52940129003.1.jpg",
+            img_url = "KakaoTalk_20251216_111630581.jpg",
             rating = 5,
             create_date=datetime(2026,1,7)
+        ),
+        Review(
+            user_id=admin.id,
+            product_id=580,
+            content="가격이 너무 비싸요",
+            img_url="1.jpg",
+            rating=3,
+            create_date=datetime(2026, 1, 10)
+        ),
+        Review(
+            user_id=admin.id,
+            product_id=582,
+            content="외관은 이쁜데 그냥저냥 그래요",
+            img_url="5.jpg",
+            rating=4,
+            create_date=datetime(2026, 1, 7)
         )
     ]
 

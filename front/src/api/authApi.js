@@ -45,3 +45,14 @@ export async function fetchMe() {
   const res = await client.get("/api/auth/me");
   return res.data; // { user_id, nickname, email, phone, address }
 }
+
+/**
+ * 회원탈퇴
+ */
+export const withdraw = ({ password, reason, reasonEtc }) => {
+  return client.post("/api/auth/withdraw", {
+    password,
+    reason,
+    reasonEtc,
+  });
+};

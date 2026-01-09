@@ -3,12 +3,27 @@ from flask import Blueprint, jsonify, request
 from flask_cors import cross_origin
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from petShop.models import Question, User  # ✅ User 추가 (role 확인용)
+from petShop.models import Question, User
 
 board_bp = Blueprint("board", __name__, url_prefix="/api/board")
 
 PER_PAGE_MAX = 50
 PAGE_GROUP = 10  # 프론트 PAGE_GROUP와 맞추기
+
+
+def _get_user_from_identity():
+    """
+    ✅ auth.py에서 identity=user_id(문자열)로 토큰을 만들고 있음.
+    그래서 여기서도 User.user_id로 조회해야 함.
+    """
+    ident = get_jwt_identity()  # 예: "admin" 또는 None
+    if not ident:
+        return None
+    return User.query.filter_by(user_id=str(ident)).first()
+
+
+def _is_admin(user: User | None) -> bool:
+    return bool(user) and (user.role or "").upper() == "ADMIN"
 
 
 @board_bp.route("", methods=["GET", "OPTIONS"])
@@ -20,8 +35,7 @@ def board_list():
     if request.method == "OPTIONS":
         return jsonify({"ok": True}), 200
 
-    # ✅ 토큰이 있으면 user_id, 없으면 None
-    user_id = get_jwt_identity()
+    user = _get_user_from_identity()
 
     page = request.args.get("page", default=1, type=int)
     limit = request.args.get("per_page", default=10, type=int)
@@ -32,35 +46,17 @@ def board_list():
     # ✅ 기본 쿼리
     q = Question.query
 
-    # =========================
-    # ✅ 권한 필터 (정책 2번)
-    # 비회원: NOTICE만
-    # 로그인:
-    #   - ADMIN: 전체
-    #   - USER : NOTICE + 본인글
-    # =========================
-    if user_id is None:
-        # 비회원이면 공지만
-        q = q.filter(Question.category == "공지")
-    else:
-        # 로그인한 경우 role 확인
-        user = User.query.get(user_id)
+    # ✅ 공지사항은 따로(/notices) 보여줄 거라서 목록에서는 제외
+    q = q.filter(Question.category != "공지사항")
 
-        # 토큰은 있는데 유저가 없으면(비정상) -> 공지만 보여주기(안전)
-        if not user:
-            q = q.filter(Question.category == "공지")
-        else:
-            if user.role == "admin":
-                # ADMIN이면 전체 (필터 없음)
-                pass
-            else:
-                # 일반 유저면 공지 + 본인글
-                q = q.filter(
-                    (Question.category == "공지") | (Question.user_id == user_id)
-                )
+    # ✅ 리스트는 "보기만"이라서
+    # - 비회원도 전부 보이게(공지 제외)
+    # - 회원도 전부 보이게(공지 제외)
+    # - 관리자도 전부 보이게(공지 제외)
+    # ※ 디테일 접근 제한은 read_post에서 막는다
 
-    # 정렬은 필터 후 적용
-    q = q.order_by(Question.id.desc())
+    # 정렬
+    q = q.order_by(Question.created_date.desc())
 
     # 전체 개수/페이지 계산
     total = q.order_by(None).count()
@@ -76,18 +72,9 @@ def board_list():
         title = getattr(row, "title", None) or getattr(row, "subject", "")
         view = getattr(row, "view_count", 0)
 
-        # created_at/create_date 등 너희 모델 필드명에 따라 달라질 수 있음
-        if getattr(row, "create_date", None):
-            date_str = row.create_date.strftime("%Y-%m-%d")
-        elif getattr(row, "created_at", None):
-            date_str = row.created_at.strftime("%Y-%m-%d")
-        else:
-            date_str = ""
+        date_str = row.created_date.strftime("%Y-%m-%d") if row.created_date else ""
 
-        # writer가 row에 저장되어 있으면 그걸 쓰고, 없으면 user에서 추정
-        writer = getattr(row, "writer", None) or "unknown"
-        if writer == "unknown" and hasattr(row, "user") and row.user:
-            writer = getattr(row.user, "nickname", "unknown")
+        writer = row.user.nickname if getattr(row, "user", None) else "알수없음"
 
         result.append({
             "id": row.id,
@@ -95,6 +82,9 @@ def board_list():
             "writer": writer,
             "date": date_str,
             "view": view,
+            "category": row.category,
+            # ✅ 비회원이면 디테일 불가(프론트에서 클릭 전에 안내 가능)
+            "can_open_detail": True if user else False,
         })
 
     start_page = ((page - 1) // PAGE_GROUP) * PAGE_GROUP + 1
@@ -110,19 +100,50 @@ def board_list():
         "end_page": end_page,
         "has_prev": page > 1,
         "has_next": page < total_pages,
+        "is_logged_in": bool(user),
+        "is_admin": _is_admin(user),
     }), 200
+
 
 @board_bp.get("/notices")
 def list_notices():
     q = ((Question.query
-         .filter(Question.category == "공지사항"))
+          .filter(Question.category == "공지사항"))
          .order_by(Question.created_date.desc()))
 
     items = q.limit(3).all()
 
     return jsonify({
         "items": [
-            {"id":n.id, "title": n.title, "date": n.created_date.strftime("%Y-%m-%d")}
+            {"id": n.id, "title": n.title, "date": n.created_date.strftime("%Y-%m-%d") if n.created_date else ""}
             for n in items
         ]
-    })
+    }), 200
+
+
+@board_bp.route("/<int:question_id>", methods=["GET", "OPTIONS"])
+@jwt_required(optional=True)
+def read_post(question_id):
+    if request.method == "OPTIONS":
+        return jsonify({"ok": True}), 200
+
+    user = _get_user_from_identity()
+    post = Question.query.get_or_404(question_id)
+
+    # ✅ 공지사항은 누구나 디테일 가능
+    if post.category == "공지사항":
+        return jsonify({"item": post.to_dict()}), 200
+
+    # ✅ 공지사항 아닌 글: 비회원은 디테일 불가
+    if not user:
+        return jsonify({"msg": "로그인이 필요합니다."}), 401
+
+    # ✅ admin이면 전체 허용
+    if _is_admin(user):
+        return jsonify({"item": post.to_dict()}), 200
+
+    # ✅ 일반 유저는 본인 글만
+    if post.user_id != user.id:
+        return jsonify({"msg": "권한이 없습니다."}), 403
+
+    return jsonify({"item": post.to_dict()}), 200

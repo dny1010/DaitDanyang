@@ -1,116 +1,180 @@
-from flask import Blueprint, request, jsonify, abort
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from datetime import datetime
+from pathlib import Path
+from uuid import uuid4
 
-from petShop.models import db, User, Question  # ✅ DB 모델은 그대로 Question
+from flask import Blueprint, request, jsonify, abort, current_app
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from werkzeug.utils import secure_filename
 
-# ✅ Blueprint 이름과 url을 post 기준으로 통일
+from petShop.models import db, User, Question
+
 post_bp = Blueprint("post", __name__, url_prefix="/api/post")
 
+ALLOWED_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
 
-def _get_current_user():
+
+def _get_current_user() -> User:
     """
-    토큰에서 user_id를 꺼내고
-    DB에서 유저를 다시 조회해서 '이 요청의 주인'을 확정
+    ✅ auth.py는 JWT identity에 user_id(문자열)를 넣고 있음.
+    예: identity="admin"
+    그래서 User.user_id로 조회한다.
     """
-    user_id = get_jwt_identity()
-    user = User.query.get(user_id)
+    ident = get_jwt_identity()
+    if not ident:
+        abort(401)
+
+    user = User.query.filter_by(user_id=str(ident)).first()
     if not user:
         abort(401)
+
     return user
 
 
 def _is_admin(user: User) -> bool:
-    """관리자 여부 판단"""
-    return user.role == "ADMIN"
+    return (user.role or "").upper() == "ADMIN"
+
+
+def _save_image(file_storage):
+    if not file_storage or not file_storage.filename:
+        return None
+
+    filename = secure_filename(file_storage.filename)
+    ext = Path(filename).suffix.lower()
+
+    if ext not in ALLOWED_IMAGE_EXTS:
+        abort(400, description="이미지 파일만 업로드할 수 있습니다.")
+
+    unique_name = f"{uuid4().hex}{ext}"
+
+    upload_dir = Path(current_app.root_path) / "static" / "uploads"
+    upload_dir.mkdir(parents=True, exist_ok=True)
+
+    save_path = upload_dir / unique_name
+    file_storage.save(save_path)
+
+    return f"/static/uploads/{unique_name}"
 
 
 @post_bp.route("", methods=["POST"])
 @jwt_required()
 def create_post():
-    """
-    게시글 생성
-    - 로그인 필수
-    - 공지(NOTICE)는 ADMIN만 가능
-    - writer/email은 서버가 User 정보로 결정
-    """
     user = _get_current_user()
 
-    data = request.get_json() or {}
-    title = (data.get("title") or "").strip()
-    content = (data.get("content") or "").strip()
-    board_type = (data.get("boardType") or "FREE").strip()
+    data = request.get_json(silent=True) or {}
+
+    title = (request.form.get("title") or data.get("title") or "").strip()
+    content = (request.form.get("content") or data.get("content") or "").strip()
+
+    category = (
+        request.form.get("category")
+        or data.get("category")
+        or request.form.get("boardType")
+        or data.get("boardType")
+        or "문의사항"
+    ).strip()
 
     if not title or not content:
         return jsonify({"message": "title/content는 필수입니다."}), 400
 
-    # ✅ 공지는 관리자만
-    if board_type == "NOTICE" and not _is_admin(user):
+    if category == "공지사항" and not _is_admin(user):
         return jsonify({"message": "공지 작성 권한이 없습니다."}), 403
+
+    img_url = _save_image(request.files.get("attachment"))
 
     post = Question(
         title=title,
         content=content,
-        board_type=board_type,
-        user_id=user.id,          # ✅ 권한 판단의 핵심
-        writer=user.nickname,     # ✅ 서버가 확정
-        email=user.email,         # ✅ 서버가 확정
-        created_at=datetime.utcnow()
+        category=category,
+        user_id=user.id,
+        created_date=datetime.utcnow(),
+        img_url=img_url,
     )
 
     db.session.add(post)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        raise
 
-    return jsonify({"id": post.id, "message": "created"}), 201
+    return jsonify({"id": post.id, "message": "created", "item": post.to_dict()}), 201
+
+
+@post_bp.route("/<int:post_id>", methods=["GET"])
+@jwt_required(optional=True)
+def read_post(post_id):
+    ident = get_jwt_identity()
+    user = User.query.filter_by(user_id=str(ident)).first() if ident else None
+
+    post = Question.query.get_or_404(post_id)
+
+    if post.category == "공지사항":
+        return jsonify({"item": post.to_dict()}), 200
+
+    if not user:
+        return jsonify({"message": "로그인이 필요합니다."}), 401
+
+    if _is_admin(user) or post.user_id == user.id:
+        return jsonify({"item": post.to_dict()}), 200
+
+    return jsonify({"message": "권한이 없습니다."}), 403
 
 
 @post_bp.route("/<int:post_id>", methods=["PATCH"])
 @jwt_required()
 def update_post(post_id):
-    """
-    게시글 수정
-    - 본인 글이거나 ADMIN만 가능
-    """
     user = _get_current_user()
     post = Question.query.get_or_404(post_id)
 
-    if post.user_id != user.id and not _is_admin(user):
+    if not (_is_admin(user) or post.user_id == user.id):
         return jsonify({"message": "수정 권한이 없습니다."}), 403
 
-    data = request.get_json() or {}
+    data = request.get_json(silent=True) or {}
 
-    if "title" in data:
-        post.title = data["title"].strip()
-    if "content" in data:
-        post.content = data["content"].strip()
+    title = request.form.get("title") or data.get("title")
+    content = request.form.get("content") or data.get("content")
+    category = request.form.get("category") or data.get("category") or request.form.get("boardType") or data.get("boardType")
 
-    # 공지 타입 변경도 ADMIN만 허용
-    if "boardType" in data:
-        new_type = data["boardType"].strip()
-        if new_type == "NOTICE" and not _is_admin(user):
+    if title is not None:
+        post.title = title.strip()
+
+    if content is not None:
+        post.content = content.strip()
+
+    if category is not None:
+        new_category = category.strip()
+        if new_category == "공지사항" and not _is_admin(user):
             return jsonify({"message": "공지로 변경할 권한이 없습니다."}), 403
-        post.board_type = new_type
+        post.category = new_category
 
-    post.updated_at = datetime.utcnow()
-    db.session.commit()
+    if request.files.get("attachment") and request.files["attachment"].filename:
+        post.img_url = _save_image(request.files.get("attachment"))
 
-    return jsonify({"message": "updated"}), 200
+    post.modified_date = datetime.utcnow()
+
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        raise
+
+    return jsonify({"message": "updated", "item": post.to_dict()}), 200
 
 
 @post_bp.route("/<int:post_id>", methods=["DELETE"])
 @jwt_required()
 def delete_post(post_id):
-    """
-    게시글 삭제
-    - 본인 글이거나 ADMIN만 가능
-    """
     user = _get_current_user()
     post = Question.query.get_or_404(post_id)
 
-    if post.user_id != user.id and not _is_admin(user):
+    if not (_is_admin(user) or post.user_id == user.id):
         return jsonify({"message": "삭제 권한이 없습니다."}), 403
 
     db.session.delete(post)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        raise
 
     return jsonify({"message": "deleted"}), 200
