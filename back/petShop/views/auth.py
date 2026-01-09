@@ -173,6 +173,10 @@ def login():
         access_token = create_access_token(identity=user_id)
         return jsonify({"accessToken": access_token}), 200
 
+    # ✅ 탈퇴한 계정이면 로그인 막기
+    if user.role == "탈퇴":
+        return jsonify({"msg": "탈퇴한 계정입니다."}), 403
+
     return jsonify({"msg": "아이디 또는 비밀번호가 올바르지 않습니다."}), 401
 
 
@@ -235,3 +239,30 @@ def update_me():
         "phone": user.phone,
         "address": user.default_address,
     }), 200
+
+@bp.post("/withdraw")
+@jwt_required()
+def withdraw():
+    current_user = get_jwt_identity()
+    user = User.query.filter_by(user_id=current_user).first()
+    if not user:
+        return jsonify({"msg": "User not found"}), 404
+
+    data = request.get_json() or {}
+    password = data.get("password") or ""
+
+    if not check_password_hash(user.password, password):
+        return jsonify({"msg": "비밀번호가 올바르지 않습니다."}), 400
+
+    # ✅ 탈퇴 처리: role 변경
+    user.role = "탈퇴"
+
+    # ✅ 개인정보 익명화(원하면)
+    user.user_id = f"withdraw_{user.id}"
+    user.nickname = f"탈퇴회원{user.id}"
+    user.email = f"withdrawn_{user.id}@deleted.local"
+    user.phone = None
+
+    db.session.commit()
+    return jsonify({"ok": True, "msg": "회원탈퇴 완료"}), 200
+
