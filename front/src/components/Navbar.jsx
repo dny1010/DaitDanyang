@@ -116,7 +116,7 @@ function Navbar() {
               <Link to="/events">EVENT</Link>
             </li>
             <li>
-              <Link to="/about">ABOUT</Link>
+              <Link to="/view">최근 본 상품</Link>
             </li>
             <li>
               <Link to="/Noticeboard">입점문의</Link>
