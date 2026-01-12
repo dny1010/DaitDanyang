@@ -55,6 +55,21 @@ def list_products():
     # limit(limit) 그 이후 상품
     # 지금까지 나온 상품은 빼고 그 뒤의 상품정보만 가져와라
 
+    ids = request.args.get("ids")
+    if ids:
+        id_list = [int(x) for x in ids.split(",") if x.isdigit()]
+        products = Product.query.filter(Product.id.in_(id_list)).all()
+
+        by_id = {p.id: p for p in products}
+        items = [{
+            "id": p.id,
+            "title": p.title,
+            "price": p.price,
+            "img_url": p.img_url
+        } for i in id_list if (p := by_id.get(i))]
+
+        return jsonify({"items": items}), 200
+
     return jsonify({
         "items": [p.to_dict() for p in items],
         "page": page,

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Order.module.css";
-import {}
+
 
 const Order = () => {
   /* ===== 주문 데이터 ===== */
@@ -40,12 +40,12 @@ const Order = () => {
 
     
 
-      alert("결제가 완료되었습니다");
-      console.log("결제 결과:", res.data);
-    } catch (err) {
-      console.error(err);
-      alert("결제 실패");
-    }
+    //   alert("결제가 완료되었습니다");
+    //   console.log("결제 결과:", res.data);
+    // } catch (err) {
+    //   console.error(err);
+    //   alert("결제 실패");
+    // }
   };
 
   return (

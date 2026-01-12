@@ -7,6 +7,8 @@ import { fetchProductDetail, fetchReviews } from "../api/productApi";
 import { fetchMyCart, addCart, updateCart } from "../api/cartApi";
 import { formatDate } from '../constants/date';
 import { createOrder } from '../api/orderApi';
+import { addRecent } from '../api/recentApi';
+
 
 const Product = () => {
     const { id } = useParams();
@@ -104,10 +106,22 @@ const Product = () => {
     const minus = () => setQty((q) => Math.max(1, q - 1));
     const plus = () => setQty((q) => q + 1);
 
-    // 찜
-    const wishitem = () => {
-        console.log("찜", product?.id);
+    // 로그인으로 이동 (장바구니, 구매 버튼 누를 때 로그인 안 했으면 이동할 수 있게)
+    // redirectTo = 로그인 후 이동할 경로, state = {} 추가로 넘길 데이터
+    const goLogin = (redirectTo, state = {}) => {
+        const ok = window.confirm("로그인이 필요합니다.\n로그인 페이지로 이동하시겠습니까?");
+        if (!ok) return;
+        
+        navigate("/login", {
+            state: {
+                redirectTo,
+                ...state,
+            },
+            replace: true,
+        });
     };
+    // 로그인 안 돼서 뜨는 에런지 확인
+    const is401 = (e) => e?.response?.status === 401;
 
     // 카트
     const cartitem = async () => {
@@ -130,7 +144,8 @@ const Product = () => {
                 navigate("/cart");
             }
         } catch (e) {
-            alert(e.message || "장바구니 담기에 실패했습니다.");
+            if (is401(e)) return goLogin("cart");
+            alert(e?.response?.data?.error || e.message || "장바구니 담기에 실패했습니다.");
         }
     };
 
@@ -147,18 +162,17 @@ const Product = () => {
             const data = await createOrder([
                 { product_id: product.id, qty: safeQty }
             ]);
-
-            // 백에서 { order_id }를 내려준다는 가정
-            // 1) 주문 상세 페이지가 있으면:
-            // navigate(`/order/${data.order_id}`);
-
-            // 2) 지금처럼 /order 한 페이지면:
-            navigate("/order");
+            navigate("/order", { state: { orderId: data?.order_id } });
         } catch (e) {
+            if (is401(e)) return goLogin("/order", { product_d: product.id, qty});
             alert(e?.response?.data?.error || e.message || "구매 처리 중 오류가 발생했습니다.");
         }
     };
 
+    // 최근 본 상품
+    useEffect(() => {
+        if (product?.id) addRecent(product.id);
+    }, [product?.id]);
 
     // 밑에 상세페이지 (탭처럼 보이지만 누르면 그 위치로 스크롤 이동시켜줌)
     // behavior: "smooth" 부드럽게 이동, start 섹션 맨 위가 화면 위쪽으로
@@ -255,9 +269,6 @@ const Product = () => {
                             </div>
 
                             <div className={styles.button}>
-                                <button className={styles.wishBtn} onClick={wishitem}>
-                                    ♡
-                                </button>
                                 <button className={styles.cartBtn} onClick={cartitem}>
                                     장바구니
                                 </button>
