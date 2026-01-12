@@ -27,6 +27,8 @@ const Order = () => {
     }
   };
 
+  
+
   useEffect(() => {
     if (!orderId) return;
 
@@ -186,7 +188,7 @@ const Order = () => {
 
         <button
           className={styles.payButton}
-          onClick={() => alert("TODO: 결제/주문확정 연결")}
+          onClick={() => navigate("/mypage/shopping/orders")}
         >
           결제하기
         </button>

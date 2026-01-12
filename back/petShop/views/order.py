@@ -93,53 +93,72 @@ def create_order():
     if not user:
         return jsonify({"error": "유저를 찾을 수 없습니다."}), 401
 
-    data = request.get_json(silent=True) or {}
-    items = data.get("items") or []
-    if not isinstance(items, list) or len(items) == 0:
-        return jsonify({"error": "items가 비어있습니다."}), 400
+    data = request.get_json(silent=True)
 
-    # ✅ 주문 기본정보 (너가 말한: 회원가입 기본주소/폰을 사용)
+    # ✅ {items:[...]} 도 받고, [...] (배열만)도 받기
+    if isinstance(data, list):
+        items = data
+    elif isinstance(data, dict):
+        items = data.get("items") or []
+    else:
+        items = []
+
+    print("DEBUG order payload =", data)
+    print("DEBUG items =", items)
+
+    if not isinstance(items, list) or len(items) == 0:
+        return jsonify({"error": "items가 비어있습니다.", "data": data}), 400
+
+    # ✅ 주문 기본정보
     if not user.default_address:
         return jsonify({"error": "기본 주소가 없습니다."}), 400
 
-    order = Order(
-        user_id=user.id,                 # ✅ FK int
-        order_address=user.default_address,
-        order_phone=user.phone,
-    )
-    db.session.add(order)
-    db.session.flush()  # ✅ order.id 확보
-
-    # ✅ OrderItem 생성 + snapshot 저장
-    for row in items:
-        product_id = row.get("product_id")
-        qty = int(row.get("qty") or 0)
-        if not product_id or qty <= 0:
-            db.session.rollback()
-            return jsonify({"error": "product_id/qty가 올바르지 않습니다."}), 400
-
-        p = Product.query.get(product_id)
-        if not p:
-            db.session.rollback()
-            return jsonify({"error": f"상품이 없습니다. product_id={product_id}"}), 404
-
-        # Product 모델 필드명에 맞게 조정 필요할 수 있음 (title/img_url/price)
-        unit_price = int(getattr(p, "price", 0) or 0)
-        product_name = getattr(p, "title", "") or ""
-        product_image = getattr(p, "img_url", "") or ""
-
-        it = OrderItem(
-            order_id=order.id,
-            product_id=p.id,
-            qty=qty,
-            unit_price=unit_price,
-            product_name=product_name,
-            product_image=product_image,
+    try:
+        order = Order(
+            user_id=user.id,  # FK int
+            order_address=user.default_address,
+            order_phone=user.phone,
         )
-        db.session.add(it)
+        db.session.add(order)
+        db.session.flush()  # order.id 확보
 
-    db.session.commit()
-    return jsonify({"order_id": order.id}), 201
+        # ✅ OrderItem 생성 + snapshot 저장
+        for row in items:
+            # row가 dict가 아니면 방어
+            if not isinstance(row, dict):
+                raise ValueError("items 요소 형식이 올바르지 않습니다.")
+
+            product_id = row.get("product_id")
+            qty = int(row.get("qty") or 0)
+
+            if not product_id or qty <= 0:
+                return jsonify({"error": "product_id/qty가 올바르지 않습니다.", "row": row}), 400
+
+            p = Product.query.get(product_id)
+            if not p:
+                return jsonify({"error": f"상품이 없습니다. product_id={product_id}"}), 404
+
+            unit_price = int(getattr(p, "price", 0) or 0)
+            product_name = getattr(p, "title", "") or ""
+            product_image = getattr(p, "img_url", "") or ""
+
+            it = OrderItem(
+                order_id=order.id,
+                product_id=p.id,
+                qty=qty,
+                unit_price=unit_price,
+                product_name=product_name,
+                product_image=product_image,
+            )
+            db.session.add(it)
+
+        db.session.commit()
+        return jsonify({"order_id": order.id}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        print("ERROR create_order:", repr(e))
+        return jsonify({"error": "주문 생성 실패", "detail": str(e)}), 500
 
 
 # =========================

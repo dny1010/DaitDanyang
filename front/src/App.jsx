@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import PostForm from "./components/PostForm";
 import Category from "./components/Category";
 import Product from "./components/Product";
+import ScrollManager from "./components/ScrollManager";
 
 import "./App.css";
 
@@ -59,6 +60,7 @@ function MainLayout() {
 export default function App() {
   return (
     <div className="App">
+      <ScrollManager />
       <Routes>
         {/* ✅ 네비바 없는 구역 */}
         <Route path="/login" element={<Login />} />

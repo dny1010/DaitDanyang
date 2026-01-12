@@ -119,7 +119,7 @@ function Navbar() {
               <Link to="/view">최근 본 상품</Link>
             </li>
             <li>
-              <Link to="/Noticeboard">입점문의</Link>
+              <Link to="/Noticeboard">게시판</Link>
             </li>
             <li>
               <Link to="/support">고객센터</Link>

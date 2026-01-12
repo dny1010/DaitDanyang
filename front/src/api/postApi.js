@@ -23,3 +23,5 @@ export async function createPost(formData) {
   const res = await client.post("/api/post", formData);
   return res.data;
 }
+
+

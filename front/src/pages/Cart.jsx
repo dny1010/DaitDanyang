@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { fetchMyCart, addCart, updateCart, removeCart } from "../api/cartApi";
+import { fetchMyCart, updateCart, removeCart } from "../api/cartApi";
+import { createOrder } from "../api/orderApi";
+import { useNavigate } from "react-router-dom";
+
 import styles from "./Cart.module.css";
 
 export default function Cart() {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -116,30 +120,44 @@ export default function Cart() {
     }
   };
 
-  // 구매는 아직 임시
-  const buySelected = () => {
+  
+  const buySelected = async () => {
+    
     const selected = items.filter((x) => x.checked);
     if (selected.length === 0) return alert("구매할 상품을 선택해줘!");
-    console.log("선택구매 상품:", selected);
-    alert("선택 상품 결제 페이지로 이동(나중에 연결)");
-  };
 
-  const buyAll = () => {
-    if (items.length === 0) return alert("장바구니가 비어있어!");
-    console.log("전체구매 상품:", items);
-    alert("전체 상품 결제 페이지로 이동(나중에 연결)");
-  };
+    const orderItems = selected.map((x) => ({
+      product_id: x.productId,
+      qty: Math.max(1, Number(x.qty) || 1),
+    }));
 
-  // (테스트 버튼) 실제로 서버에 담고 싶으면 productId를 넣어서 POST 호출
-  // 주의: productId=1 이 DB에 있어야 함
-  const addTestItem = async () => {
     try {
-      await addCart(1, 1); // POST /api/cart
-      await loadCart();
-    } catch (err) {
-      alert(err?.response?.data?.message || "테스트 담기 실패");
+      const data = await createOrder({ items: orderItems });
+      await Promise.all(selected.map((x) => removeCart(x.cartId)));
+      navigate(`/order/${data.order_id}`);
+    } catch (e) {
+      alert("구매 처리 중 오류가 발생했습니다.");
     }
   };
+
+  const buyAll = async () => {
+    if (items.length === 0) return alert("장바구니가 비어있어!");
+
+    const orderItems = items.map((x) => ({
+      product_id: x.productId,
+      qty: Math.max(1, Number(x.qty) || 1),
+    }));
+
+    try {
+      const data = await createOrder({ items: orderItems });
+      await Promise.all(items.map((x) => removeCart(x.cartId)));
+      navigate(`/order/${data.order_id}`);
+    } catch (e) {
+      alert("구매 처리 중 오류가 발생했습니다.");
+    }
+  };
+
+
 
   return (
     <div className={styles.cartWrap}>

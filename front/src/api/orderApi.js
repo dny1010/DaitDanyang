@@ -16,8 +16,8 @@ export async function getOrders() {
  * body: { items: [{ product_id, qty }] }
  * return: { order_id }
  */
-export async function createOrder(items) {
-  const res = await client.post("/api/orders", { items });
+export async function createOrder(payload) {
+  const res = await client.post("/api/orders", payload);
   return res.data;
 }
 
