@@ -18,9 +18,10 @@ export function addRecent(productId) {
 }
 
 export async function fetchRecentProducts() {
-    const ids = JSON.parse(localStorage.getItem(KEY) || "[]");
-    if (ids.length === 0) return [];
+    const id = JSON.parse(localStorage.getItem(KEY) || "[]");
+    if (id.length === 0) return [];
 
+    const ids = id.map(v => (typeof v === "number" ? v : v.id)).filter(Boolean);
     const res = await client.get("/api/product", {
         params: { ids: ids.join(",") },
     });

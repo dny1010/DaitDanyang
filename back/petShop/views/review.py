@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
 
-from petShop.models import Review, db
+from petShop.models import Review, db, Product
 
 review_bp = Blueprint('review', __name__, url_prefix='/api')
 
@@ -176,4 +176,48 @@ def list_main_reviews():
             "rating": r.rating,
             "date": r.create_date.strftime("%Y-%m-%d")}
             for r in reviews]
+    })
+
+@review_bp.get('/me/reviews')
+@jwt_required()
+def list_my_reviews():
+    user_id = get_jwt_identity()
+
+    page = request.args.get('page', 1, type=int)
+    limit = request.args.get('limit', 8, type=int)
+    rating = request.args.get('rating', type=int)
+
+    q = (db.session.query(Review, Product)
+         .join(Product, Product.id == Review.product_id)
+         .filter(Review.user_id == user_id))
+
+    if rating is not None:
+        if rating < 1 or rating > 5:
+            return jsonify({"message": "별점은 1~5점만 가능합니다."}),400
+        q = q.filter(Review.rating == rating)
+
+    q = q.order_by(Review.create_date.desc())
+
+    total = q.count()
+    item = q.offset((page - 1) * limit).limit(limit).all()
+
+    items = []
+    # join을 쓰면 list 안에 튜플로 들어감
+    for r,p in item:
+        items.append({
+            "id": r.id,
+            "product_id": r.product_id,
+            "title": p.title,
+            "rating": r.rating,
+            "content": r.content,
+            "date": r.create_date.strftime("%Y-%m-%d"),
+            "images": [r.img_url] if r.img_url else []
+        })
+
+    return jsonify({
+        "items": items,
+        "page": page,
+        "limit": limit,
+        "total": total,
+        "totalPages": (total + limit - 1)//limit,
     })

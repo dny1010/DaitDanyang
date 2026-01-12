@@ -11,64 +11,30 @@ export default function MyReview() {
   const [myReviews, setMyReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ 임시 더미(백엔드 없을 때 화면 확인용)
-  const fallbackDummy = [
-    {
-      id: 1,
-      productName: "강아지 겨울 패딩",
-      rating: 5,
-      title: "따뜻하고 예뻐요",
-      content: "사이즈도 딱 맞고 보온이 좋아요!",
-      createdAt: "2026-01-02",
-      images: [],
-    },
-    {
-      id: 2,
-      productName: "강아지 배변패드",
-      rating: 4,
-      title: "흡수력 괜찮아요",
-      content: "조금 얇긴 한데 가격 생각하면 만족합니다.",
-      createdAt: "2025-12-20",
-      images: [],
-    },
-  ];
-
   useEffect(() => {
     const fetchMyReviews = async () => {
-      try {;
-        const data = await getMyReviews();
-        setMyReviews(data);
+      try {
+        const rating =filter === "전체" ? undefined : Number(filter);
+        const data = await getMyReviews({ rating });
+        setMyReviews(Array.isArray(data.items) ? data.items : []);
       } catch (err) {
         console.error("리뷰 불러오기 실패", err);
-        // ✅ 백엔드 아직 없을 때는 화면만 확인 가능하게 더미로 대체 백 만들면 지우면됌
-        setMyReviews(fallbackDummy);
+        setMyReviews([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchMyReviews();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [filter]);
 
-  const list = useMemo(() => {
-    if (filter === "전체") return myReviews;
-
-    // "5점" 같은 형태로 필터를 만들 거면 이렇게 처리
-    const rating = Number(filter);
-    if (!Number.isNaN(rating)) {
-      return myReviews.filter((r) => Number(r.rating) === rating);
-    }
-
-    return myReviews;
-  }, [filter, myReviews]);
-
+  const list = myReviews;
   const selected = open ? myReviews.find((r) => r.id === open) : null;
 
   // 별 표시 유틸(간단)
   const renderStars = (rating) => {
     const n = Number(rating) || 0;
-    return "★★★★★☆☆☆☆☆".slice(5 - n, 10 - n); // 0~5에 대응
+    return "⭐⭐⭐⭐⭐☆☆☆☆☆".slice(5 - n, 10 - n); // 0~5에 대응
   };
 
   return (

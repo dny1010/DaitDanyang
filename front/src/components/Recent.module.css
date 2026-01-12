@@ -70,11 +70,6 @@
   display: block;
 }
 
-.name {
-  justify-content: flex-start;
-  padding: 0 14px;
-}
-
 .cartBtn {
   background-color: #e8eef8;
   border: 1px solid #e8eef8;
