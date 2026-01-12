@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./OrderList.module.css";
 import ReviewModal from "../ReviewModal"; // 경로 유지
-import { getOrders } from "../../../api/orderApi";
+import { getOrders, cancelOrder } from "../../../api/orderApi";
 
 
 const STATUS_OPTIONS = [
@@ -44,6 +44,27 @@ export default function OrderList() {
   const [reviewOpen, setReviewOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
 
+
+
+
+
+
+
+  const handleCancel = async (orderId) => {
+  const ok = window.confirm(`주문을 취소할까요? (주문번호: ${orderId})`);
+  if (!ok) return;
+
+  try {
+    await cancelOrder(orderId);
+    alert("주문이 취소되었습니다.");
+
+    // ✅ 화면 갱신: 가장 간단한 방법
+    handleSearch();
+  } catch (e) {
+    alert(e?.response?.data?.error || e.message || "주문취소 실패");
+  }
+  };
+
   const openReviewModal = (order, item) => {
     setSelectedItem({
       orderId: order.orderId,
@@ -85,7 +106,7 @@ export default function OrderList() {
     }
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     handleSearch();
   }, []);
 
@@ -281,7 +302,7 @@ export default function OrderList() {
                         <button
                           type="button"
                           className={styles.grayBtn}
-                          onClick={() => alert("주문취소(나중에 연결)")}
+                          onClick={() => handleCancel(order.orderId)}
                         >
                           주문취소
                         </button>

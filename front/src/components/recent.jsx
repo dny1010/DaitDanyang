@@ -1,48 +1,83 @@
-import React from 'react'
-import styles from './Recent.module.css'
-import { Col, Container, Row } from 'react-bootstrap'
+import React, { useEffect, useState } from "react";
+import styles from "./Recent.module.css";
+import { Col, Row } from "react-bootstrap";
+import { fetchRecentProducts } from "../api/recentApi";
+import { useNavigate } from "react-router-dom";
+import { addCart } from "../api/cartApi";
 
 const Recent = () => {
+  const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
-  const items = [{ id: 1, price: 2000, }, {id: 2, price: 5000}];
+  // 상품 가져오기
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await fetchRecentProducts();
+        setItems(data);
+      } catch (e) {
+        console.error(e);
+        setItems([]);
+      }
+    })();
+  }, []);
 
+  // 로그인 O = cart로 연결, 로그인 X = 로그인 페이지로 연결
+  const handleCartClick = async (productId) => {
+    try {
+      await addCart(productId, 1);
+      navigate("/cart");
+    } catch (err) {
+      if (err?.response?.status === 401) {
+        navigate("/login", { state: { redirectTo: "/cart" } });
+        return;
+      }
 
+      console.error(err);
+      alert("장바구니 담기에 실패했습니다.");
+    }
+  };
 
   return (
     <div className={styles.recent}>
-      <div className={styles.title}>
-        <div className={styles.tt}>
-          최근 본 상품
-        </div>
-      </div>
-      <div className={styles.content}>
-        <Container fluid="md" className={styles.items}>
-          <Row className={styles.row}>
-            <Col xs={3} md={3} className={styles.item_t}>이미지</Col>
-            <Col xs={5} md={5} className={styles.item_t}>상품명</Col>
-            <Col xs={2} md={2} className={styles.item_t}>금액</Col>
-            <Col xs={2} md={2} className={styles.item_t}>장바구니</Col>
+      <div className={styles.maintitle}>최근 본 상품</div>
+
+      <div className={styles.wrap}>
+        <Row className={`g-0 ${styles.row}`}>
+          <Col xs={2} className={styles.title}>이미지</Col>
+          <Col xs={7} className={styles.title}>상품명</Col>
+          <Col xs={2} className={styles.title}>금액</Col>
+          <Col xs={1} className={styles.title}>장바구니</Col>
+        </Row>
+
+        {items.map((i) => (
+          <Row key={i.id} className={`g-0 ${styles.body}`}>
+            <Col xs={2} className={styles.cell}>
+              <div className={styles.thumb}>
+                {i.img_url ? (
+                  <img src={i.img_url} alt={i.title} />
+                ) : (
+                  <div className={styles.thumbPlaceholder} />
+                )}
+              </div>
+            </Col>
+
+            <Col xs={7} className={`${styles.cell} ${styles.name}`}>
+              {i.title}
+            </Col>
+
+            <Col xs={2} className={styles.cell}>
+              {i.price.toLocaleString()}원
+            </Col>
+
+            <Col xs={1} className={styles.cell}>
+              <button className={styles.cartBtn} onClick={() => handleCartClick(i.id)}>Click!</button>
+            </Col>
           </Row>
-          {items.map((i) => (
-            <Row key={i.id} className={`g-0 ${styles.row}`}>
-              <Col xs={3} md={3} className={`px-0 ${styles.item}`}>
-                <img src={i.imgUrl} alt=""></img>
-              </Col>
-              <Col xs={5} md={5} className={`px-0 ${styles.item}`}>
-                <div>{i.name}</div>
-              </Col>
-              <Col xs={2} md={2} className={`px-0 ${styles.item}`}>
-                <div>{i.price}원</div>
-              </Col>
-              <Col xs={2} md={2} className={`px-0 ${styles.item}`}>
-                <button>장바구니에 넣기</button>
-              </Col>
-            </Row>
-          ))}
-        </Container>
+        ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Recent
+export default Recent;

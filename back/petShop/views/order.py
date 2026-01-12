@@ -1,50 +1,205 @@
-from flask import Blueprint, jsonify
+# ✅ back/petShop/views/order.py  (예: Blueprint 파일)
+from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from petShop.models import Order, OrderItem  # ✅ OrderItem 필요
+from petShop.models import db, User, Order, OrderItem, Product
 
-order_bp = Blueprint('orders', __name__, url_prefix='/api/orders')
+order_bp = Blueprint("orders", __name__, url_prefix="/api/orders")
 
-@order_bp.route('', methods=['GET'])
+
+# =========================
+# 0) 유틸: 현재 로그인 유저(User) 얻기
+# - JWT identity에 user.user_id(문자열) 넣는 방식이라면 filter_by(user_id=ident)
+# - JWT identity에 user.id(정수) 넣는 방식이라면 query.get(ident)
+# =========================
+def get_current_user():
+    ident = get_jwt_identity()
+
+    # ✅ 지금 너 프로젝트는 "문자열 로그인아이디(user.user_id)"를 identity로 쓰는 흐름이었음
+    # access_token = create_access_token(identity=user.user_id)
+    user = User.query.filter_by(user_id=ident).first()
+    return user
+
+
+# =========================
+# 1) 주문 목록 조회 (OrderList.jsx가 원하는 스키마로 반환)
+# GET /api/orders
+# =========================
+@order_bp.route("", methods=["GET"])
+@order_bp.route("/", methods=["GET"])
 @jwt_required()
 def list_orders():
-    current_user = get_jwt_identity()  # ⚠️ 이 값이 User.id(int)라고 가정
+    user = get_current_user()
+    if not user:
+        return jsonify({"error": "유저를 찾을 수 없습니다."}), 401
 
     orders = (
         Order.query
-        .filter(Order.user_id == current_user)
+        .filter(Order.user_id == user.id)   # ✅ Order.user_id는 User.id(FK int)
         .order_by(Order.ordered_date.desc())
         .all()
     )
 
-    result = []
+    payload = []
     for o in orders:
         items_payload = []
 
-        # ✅ 새 구조: o.items 안에 OrderItem들이 있음
-        for it in o.items:
-            # product 관계를 쓰거나, snapshot을 우선 사용
+        for it in o.items:  # Order.items relationship
             p = getattr(it, "product", None)
 
-            title = it.product_name or (p.title if p else None)
-            img_url = it.product_image or (p.img_url if p else None)
+            # snapshot 우선, 없으면 product에서 보강
+            name = it.product_name or (getattr(p, "title", None) if p else None) or ""
+            image_url = it.product_image or (getattr(p, "img_url", None) if p else None) or ""
+            unit_price = int(it.unit_price or (getattr(p, "price", 0) if p else 0) or 0)
+            qty = int(it.qty or 0)
+            line_total = unit_price * qty
 
-            unit_price = it.unit_price or (p.price if p else 0)
-            line_price = unit_price * it.qty
-
+            # ✅ OrderList.jsx가 기대하는 키로 맞춤
             items_payload.append({
-                "id": it.id,                 # ✅ order_item id
-                "product_id": it.product_id,
-                "img_url": img_url,
-                "title": title,
-                "qty": it.qty,               # ✅ 수량(추천)
-                "price": line_price,         # 팀원 코드처럼 “총가격”을 price에 넣음
+                "id": it.id,
+                "productId": it.product_id,
+                "name": name,                 # it.name
+                "imageUrl": image_url,        # it.imageUrl
+                "qty": qty,                   # it.qty
+                "price": line_total,          # it.price  (총액)
+                "optionText": "",             # 아직 옵션 없으면 빈 문자열
+                "status": "PAID",             # 상태 컬럼 없으면 일단 기본값
+                "courier": None,              # 운송장 기능 나중에
+                "trackingNo": None,
+                "reviewWritten": False,
+                "deliveredAt": None,
             })
 
-        result.append({
-            "order_Id": o.id,
-            "ordered_date": o.ordered_date.strftime("%Y-%m-%d"),
-            "items": items_payload
+        payload.append({
+            "orderId": o.id,                                  # order.orderId
+            "orderedAt": o.ordered_date.strftime("%Y-%m-%d"), # order.orderedAt
+            "items": items_payload,
         })
 
-    return jsonify(result)
+    return jsonify(payload), 200
+
+
+# =========================
+# 2) 주문 생성
+# POST /api/orders
+# body: { items: [{ product_id, qty }] }
+# return: { order_id }
+# =========================
+@order_bp.route("", methods=["POST"])
+@order_bp.route("/", methods=["POST"])
+@jwt_required()
+def create_order():
+    user = get_current_user()
+    if not user:
+        return jsonify({"error": "유저를 찾을 수 없습니다."}), 401
+
+    data = request.get_json(silent=True) or {}
+    items = data.get("items") or []
+    if not isinstance(items, list) or len(items) == 0:
+        return jsonify({"error": "items가 비어있습니다."}), 400
+
+    # ✅ 주문 기본정보 (너가 말한: 회원가입 기본주소/폰을 사용)
+    if not user.default_address:
+        return jsonify({"error": "기본 주소가 없습니다."}), 400
+
+    order = Order(
+        user_id=user.id,                 # ✅ FK int
+        order_address=user.default_address,
+        order_phone=user.phone,
+    )
+    db.session.add(order)
+    db.session.flush()  # ✅ order.id 확보
+
+    # ✅ OrderItem 생성 + snapshot 저장
+    for row in items:
+        product_id = row.get("product_id")
+        qty = int(row.get("qty") or 0)
+        if not product_id or qty <= 0:
+            db.session.rollback()
+            return jsonify({"error": "product_id/qty가 올바르지 않습니다."}), 400
+
+        p = Product.query.get(product_id)
+        if not p:
+            db.session.rollback()
+            return jsonify({"error": f"상품이 없습니다. product_id={product_id}"}), 404
+
+        # Product 모델 필드명에 맞게 조정 필요할 수 있음 (title/img_url/price)
+        unit_price = int(getattr(p, "price", 0) or 0)
+        product_name = getattr(p, "title", "") or ""
+        product_image = getattr(p, "img_url", "") or ""
+
+        it = OrderItem(
+            order_id=order.id,
+            product_id=p.id,
+            qty=qty,
+            unit_price=unit_price,
+            product_name=product_name,
+            product_image=product_image,
+        )
+        db.session.add(it)
+
+    db.session.commit()
+    return jsonify({"order_id": order.id}), 201
+
+
+# =========================
+# 3) 주문 1건 상세 조회 (Order.jsx 용)
+# GET /api/orders/<int:order_id>
+# =========================
+@order_bp.route("/<int:order_id>", methods=["GET"])
+@jwt_required()
+def get_order(order_id):
+    user = get_current_user()
+    if not user:
+        return jsonify({"error": "유저를 찾을 수 없습니다."}), 401
+
+    o = Order.query.get_or_404(order_id)
+    if o.user_id != user.id:
+        return jsonify({"error": "권한이 없습니다."}), 403
+
+    items_payload = []
+    for it in o.items:
+        p = getattr(it, "product", None)
+
+        name = it.product_name or (getattr(p, "title", None) if p else None) or ""
+        image_url = it.product_image or (getattr(p, "img_url", None) if p else None) or ""
+        unit_price = int(it.unit_price or (getattr(p, "price", 0) if p else 0) or 0)
+        qty = int(it.qty or 0)
+        line_total = unit_price * qty
+
+        items_payload.append({
+            "id": it.id,
+            "product_id": it.product_id,
+            "title": name,
+            "img_url": image_url,
+            "qty": qty,
+            "line_price": line_total,
+            "unit_price": unit_price,
+        })
+
+    return jsonify({
+        "order": {
+            "order_id": o.id,
+            "ordered_date": o.ordered_date.strftime("%Y-%m-%d"),
+            "order_address": o.order_address,
+            "order_phone": o.order_phone,
+        },
+        "items": items_payload
+    }), 200
+
+
+@order_bp.route("/<int:order_id>", methods=["DELETE"])
+@jwt_required()
+def cancel_order(order_id):
+    user = get_current_user()
+    if not user:
+        return jsonify({"error": "유저를 찾을 수 없습니다."}), 401
+
+    o = Order.query.get_or_404(order_id)
+    if o.user_id != user.id:
+        return jsonify({"error": "권한이 없습니다."}), 403
+
+    db.session.delete(o)  # cascade로 OrderItem도 같이 삭제됨 (설정되어 있어야 함)
+    db.session.commit()
+    return jsonify({"ok": True, "orderId": order_id}), 200
+

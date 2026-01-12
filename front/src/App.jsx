@@ -29,7 +29,7 @@ import Withdraw from "./pages/MyPage/member/Withdraw";
 // 기타
 import MyQna from "./pages/MyPage/MyQna";
 import MyReview from "./pages/MyPage/MyReview";
-// import Recent from "./components/Recent";
+import Recent from "./components/Recent";
 
 import Footer from './components/Footer'; 
 import MainPage from "./pages/MainPage"; 
@@ -80,10 +80,10 @@ export default function App() {
           <Route path="/Noticeboard" element={<Noticeboard />} />
           <Route path="/Noticeboard/:id" element={<NoticeDetail />} />
           <Route path="/Noticeboard/edit/:id" element={<EditPost />} /> 
-          <Route path="/order" element={<Order />} />
+          <Route path="/order/:orderId" element={<Order />} />
 
           <Route path="/AdminPostForm" element={<AdminPostForm />} />
-          {/* // <Route path="/view" element={<Recent />} /> */}
+          <Route path="/view" element={<Recent />} />
 
 
           {/* ✅ 마이페이지 */}
