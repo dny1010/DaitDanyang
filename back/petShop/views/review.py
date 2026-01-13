@@ -4,7 +4,7 @@ from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from werkzeug.utils import secure_filename
 
-from petShop.models import Review, db, Product
+from petShop.models import Review, db, Product, User
 
 review_bp = Blueprint('review', __name__, url_prefix='/api')
 
@@ -120,14 +120,18 @@ def update_review(review_id):
     if content:
         r.content = content
 
-    # 이미지 교체 (선택)
+    remove_image = request.form.get("removeImage") == "1"
     f = request.files.get("image")
+
+    if remove_image:
+        delete_image(r.img_url)
+        r.img_url = None
+
+    # 이미지 교체 (선택)
+
     if f and f.filename:
         if not allowed_file(f.filename):
             return jsonify({"message": "이미지 확장자는 png/jpg/jpeg/webp만 가능합니다."}), 400
-
-        # 기존파일 삭제
-        delete_image(r.img_url)
 
         # 새 파일 저장
         safe = secure_filename(f.filename)
@@ -181,7 +185,9 @@ def list_main_reviews():
 @review_bp.get('/me/reviews')
 @jwt_required()
 def list_my_reviews():
-    user_id = get_jwt_identity()
+    i = get_jwt_identity()
+    u = User.query.filter_by(user_id=i).first()
+    user_id = u.id
 
     page = request.args.get('page', 1, type=int)
     limit = request.args.get('limit', 8, type=int)
@@ -207,10 +213,10 @@ def list_my_reviews():
         items.append({
             "id": r.id,
             "product_id": r.product_id,
-            "title": p.title,
+            "productName": p.title,
             "rating": r.rating,
             "content": r.content,
-            "date": r.create_date.strftime("%Y-%m-%d"),
+            "createdAt": r.create_date.strftime("%Y-%m-%d"),
             "images": [r.img_url] if r.img_url else []
         })
 
