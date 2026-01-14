@@ -82,13 +82,12 @@ export default function OrderList() {
       orderId: order.orderId,
       orderedAt: order.orderedAt,
       orderItemId: item.id,
-      product_id: item.product_id,
+      product_id: item.productId,
       productName: item.name,
       optionText: item.optionText,
       imageUrl: item.imageUrl,
     });
     setReviewOpen(true);
-    console.log("item:", item);
   };
 
   const closeReviewModal = () => {
@@ -96,21 +95,19 @@ export default function OrderList() {
     setSelectedItem(null);
   };
 
-  const handleSubmitReview = async (reviewData) => {
+  const handleSubmitReview = async (payload) => {
     try {
-      const product_id = reviewData.product_id;
+      const product_id = payload?.product_id;
+      const fd = payload?.formData;
+
       if (!product_id) {
-        alert("productId가 없어서 리뷰를 등록할 수 없어. 주문목록 응답에 productId가 필요해!");
+        alert("product_id가 없습니다.");
         return;
       }
-
-      const fd = new FormData();
-      fd.append("rating", String(reviewData.rating));
-      fd.append("content", reviewData.content);
-
-      // ✅ 백은 image 1개만 받음(request.files.get("image"))
-      const first = (reviewData.files || [])[0];
-      if (first) fd.append("image", first);
+      if (!fd) {
+        alert("formData가 없습니다.");
+        return;
+      }
 
       await createReview(product_id, fd);
 
@@ -118,10 +115,14 @@ export default function OrderList() {
       await handleSearch();
       closeReviewModal();
     } catch (e) {
-      alert(e?.response?.data?.message || e?.response?.data?.error || e.message || "후기 등록 실패");
+      alert(
+        e?.response?.data?.message ||
+        e?.response?.data?.error ||
+        e.message ||
+        "후기 등록 실패"
+      );
     }
   };
-
 
 
 
@@ -132,6 +133,12 @@ export default function OrderList() {
       setErrorMsg("");
 
       const data = await getOrders();
+
+
+      console.log(
+      "first item keys:",
+      Object.keys(data?.[0]?.items?.[0] || {})
+    );
 
       setOrders(Array.isArray(data) ? data : []);
     } catch (e) {

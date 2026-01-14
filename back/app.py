@@ -28,8 +28,8 @@ def create_app():
     # 1. 기본 시크릿 설정
     # =========================
 
-    UPLOAD_ROOT = os.path.join("static", "uploads")
-    REVIEW_DIR = os.path.join(UPLOAD_ROOT, "review")
+    UPLOAD_ROOT = os.path.join(app.static_folder, "uploads")
+    REVIEW_DIR = os.path.join(UPLOAD_ROOT, "reviews")
     os.makedirs(REVIEW_DIR, exist_ok=True)
 
     app.config["UPLOAD_ROOT"] =UPLOAD_ROOT

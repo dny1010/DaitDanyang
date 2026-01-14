@@ -22,17 +22,31 @@ const QUICK_RANGES = [
 // ✅ 더미 주문 데이터 (나중에 API 응답으로 대체)
 const DUMMY_ORDERS = [
   {
-    orderId: "20240825-0009329",
-    orderedAt: "2024-08-25",
+    orderId: "20260102-0001048",
+    orderedAt: "2026-01-02",
     items: [
       {
         id: "item-1",
         imageUrl:
-          "https://images.unsplash.com/photo-1520975958225-99f6cc2bbd9a?w=200&q=80",
-        name: "하프넥 스티치 리본 맞주름 롱 원피스",
-        optionText: "네이비(navy) / free",
+          "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200&q=80", // 강아지 이미지
+        name: "강아지 저자극 샴푸 300ml",
+        optionText: "무향 / 300ml",
         qty: 1,
-        price: 40000,
+        price: 15900,
+        status: "CANCELLED",
+        courier: null,
+        trackingNo: null,
+        reviewWritten: false,
+        deliveredAt: null,
+      },
+      {
+        id: "item-2",
+        imageUrl:
+          "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=200&q=80", // 강아지 간식 느낌
+        name: "훈련용 동결건조 닭가슴살 큐브",
+        optionText: "100g",
+        qty: 2,
+        price: 8900,
         status: "CANCELLED",
         courier: null,
         trackingNo: null,
@@ -48,11 +62,25 @@ const DUMMY_ORDERS = [
       {
         id: "item-3",
         imageUrl:
-          "https://images.unsplash.com/photo-1520975661595-6453be3f7070?w=200&q=80",
-        name: "겨울 기모 후드 티셔츠",
-        optionText: "오프화이트 / L",
+          "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=200&q=80", // 고양이 이미지
+        name: "고양이 벤토나이트 응고형 모래",
+        optionText: "무향 / 6L",
         qty: 1,
-        price: 29900,
+        price: 13800,
+        status: "RETURNED",
+        courier: "CJ대한통운",
+        trackingNo: "123456789012",
+        reviewWritten: false,
+        deliveredAt: "2025-12-24",
+      },
+      {
+        id: "item-4",
+        imageUrl:
+          "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=200&q=80", // 캣타워/장난감 느낌
+        name: "고양이 낚시대 깃털 장난감 세트",
+        optionText: "랜덤색상 / 3종",
+        qty: 1,
+        price: 9900,
         status: "RETURNED",
         courier: "CJ대한통운",
         trackingNo: "123456789012",
@@ -62,6 +90,7 @@ const DUMMY_ORDERS = [
     ],
   },
 ];
+
 
 function formatMoney(n) {
   return n.toLocaleString("ko-KR") + "원";

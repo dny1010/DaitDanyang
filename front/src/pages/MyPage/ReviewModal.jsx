@@ -50,6 +50,11 @@ export default function ReviewModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!rating || rating < 1 || rating > 5) {
+      alert("별점을 선택해 주세요.");
+      return;
+    }
+
     if (!content.trim()) {
       alert("내용을 입력해 주세요.");
       return;

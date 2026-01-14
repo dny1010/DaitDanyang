@@ -60,9 +60,19 @@ def list_reviews(product_id):
 @review_bp.post('/product/<int:product_id>/reviews')
 @jwt_required()
 def create_review(product_id):
-    user_id = get_jwt_identity()
+    identity = get_jwt_identity()  # 보통 로그인 아이디(user.user_id)가 들어옴
 
-    rating = int(request.form.get("rating", 0))
+    # ✅ identity로 User 찾기
+    u = User.query.filter_by(user_id=identity).first()
+    if not u:
+        return jsonify({"message": "유저를 찾을 수 없습니다."}), 401
+
+    rating_raw = request.form.get("rating")
+    try:
+        rating = int(rating_raw)
+    except (TypeError, ValueError):
+        return jsonify({"message": "별점을 선택해 주세요."}), 400
+
     content = (request.form.get("content") or "").strip()
 
     if rating < 1 or rating > 5:
@@ -82,31 +92,37 @@ def create_review(product_id):
         new_name = f"{uuid.uuid4().hex}.{ext}"
 
         save_dir = current_app.config["UPLOAD_FOLDER_REVIEW"]
+        os.makedirs(save_dir, exist_ok=True)  # ✅ 폴더 없으면 500 방지
         save_path = os.path.join(save_dir, new_name)
         f.save(save_path)
 
         img_url = f"/static/uploads/reviews/{new_name}"
 
     r = Review(
-        user_id=user_id,
+        user_id=u.id,          # ✅ 여기: 정수 PK로 저장 (정답)
         product_id=product_id,
         content=content,
         rating=rating,
-        img_url=img_url)
+        img_url=img_url
+    )
 
     db.session.add(r)
     db.session.commit()
     return jsonify(r.to_dict()), 201
 
+
 @review_bp.put('/reviews/<int:review_id>')
 @jwt_required()
 def update_review(review_id):
-    user_id = get_jwt_identity()
-
+    identity = get_jwt_identity()
     r = Review.query.get_or_404(review_id)
 
-    # 내 리뷰만 수정 가능하게 유저 확인
-    if r.user_id != user_id:
+    u = User.query.filter_by(user_id=identity).first()
+    if not u:
+        return jsonify({"message": "유저를 찾을 수 없습니다."}), 401
+
+    # 3️⃣ 권한 체크
+    if r.user_id != u.id:
         return jsonify({"message": "권한이 없습니다."}), 403
 
     rating = request.form.get("rating", type=int)
@@ -150,10 +166,15 @@ def update_review(review_id):
 @review_bp.delete('/reviews/<int:review_id>')
 @jwt_required()
 def delete_review(review_id):
-    user_id = get_jwt_identity()
+    identity = get_jwt_identity()
+
     r = Review.query.get_or_404(review_id)
 
-    if r.user_id != user_id:
+    u = User.query.filter_by(user_id=identity).first()
+    if not u:
+        return jsonify({"message": "유저를 찾을 수 없습니다."}), 401
+
+    if r.user_id != u.id:
         return jsonify({"message": "권한이 없습니다."}), 403
 
     # 파일 삭제
@@ -178,6 +199,7 @@ def list_main_reviews():
             "user_id": r.user_id,
             "content": r.content,
             "rating": r.rating,
+            "img_url": r.img_url,
             "date": r.create_date.strftime("%Y-%m-%d")}
             for r in reviews]
     })
@@ -187,6 +209,8 @@ def list_main_reviews():
 def list_my_reviews():
     i = get_jwt_identity()
     u = User.query.filter_by(user_id=i).first()
+    if not u:
+        return jsonify({"message": "유저를 찾을 수 없습니다."}), 401
     user_id = u.id
 
     page = request.args.get('page', 1, type=int)

@@ -12,6 +12,14 @@ export async function fetchProductDetail(productId) {
 
 export async function fetchMainReviews() {
   const res = await client.get("/api/reviews/main");
+  const base = (client.defaults.baseURL || "").replace(/\/$/, "");
+
+  res.data.reviews = (res.data.reviews || []).map((r) => ({
+    ...r,
+    imgUrl: r.img_url?.startsWith("http")
+      ? r.img_url
+      : `${base}${r.img_url || ""}`,
+  }));
   return res.data;
 }
 

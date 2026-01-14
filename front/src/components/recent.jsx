@@ -62,8 +62,8 @@ const Recent = () => {
               </div>
             </Col>
 
-            <Col xs={7} className={`${styles.cell} ${styles.name}`}>
-              {i.title}
+            <Col xs={7} className={`${styles.cell} ${styles.name}`} onClick={() => navigate(`/product/$ {i.id}`) }>
+              {i.title}       
             </Col>
 
             <Col xs={2} className={styles.cell}>

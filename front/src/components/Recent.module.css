@@ -50,7 +50,9 @@
   border-right: 1px solid #ccc;
   background: #fff;
 }
-
+.name {
+  cursor: pointer;
+}
 .cell:last-child {
   border-right: none;
 }
