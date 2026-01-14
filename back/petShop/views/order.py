@@ -149,6 +149,7 @@ def create_order():
                 unit_price=unit_price,
                 product_name=product_name,
                 product_image=product_image,
+                status = "ORDERED"
             )
             db.session.add(it)
 

@@ -1,5 +1,5 @@
 // src/pages/MyPage/MyReview.jsx
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./MyQna.module.css"; // ✅ QnA랑 폼 똑같이 쓸 거면 그대로 재사용
 import { getMyReviews } from "../../api/myReviewApi";
 
@@ -16,6 +16,7 @@ export default function MyReview() {
       try {
         const rating =filter === "전체" ? undefined : Number(filter);
         const data = await getMyReviews({ rating });
+        console.log("getMyReviews res:", data);
         setMyReviews(Array.isArray(data.items) ? data.items : []);
       } catch (err) {
         console.error("리뷰 불러오기 실패", err);
@@ -27,6 +28,7 @@ export default function MyReview() {
 
     fetchMyReviews();
   }, [filter]);
+
 
   const list = myReviews;
   const selected = open ? myReviews.find((r) => r.id === open) : null;
@@ -77,7 +79,7 @@ export default function MyReview() {
                 <span className={styles.date}>{r.createdAt}</span>
               </div>
 
-              <div className={styles.subject}>{r.title}</div>
+              <div className={styles.subject}>{r.content}</div>
               <div className={styles.meta}>별점: {r.rating} / 5</div>
             </div>
           </button>
